@@ -1,0 +1,38 @@
+.slider-container {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+  }
+  
+  .slider-card {
+    min-width: 100%;
+    padding: 20px;
+    transition: transform 0.5s ease;
+    border-radius: 8px;
+    color: white;
+  }
+  
+  .active {
+    transform: translateX(0);
+  }
+  
+  .slider-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .left {
+    left: 10px;
+  }
+  
+  .right {
+    right: 10px;
+  }
+  
