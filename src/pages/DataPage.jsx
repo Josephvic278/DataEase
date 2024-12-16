@@ -143,7 +143,7 @@ const DataPage = () => {
     // Extract the plan size in GB
     const planSizeInGB = extractPlanSizeInGB(plan.plan_name);
   
-    // Determine additional cost
+    // Determine additional cost and size 
     const additionalCost = planSizeInGB >= 5 ? 15 : 8;
   
     // Update amount and month validation
