@@ -116,10 +116,13 @@ export const AuthProvider = ({ children }) => {
 
   // Resend OTP
   const resendOtp = async (email) => {
+    // console.log(email)
     try {
       await axiosInstance.post('/users/resend-otp/', { email });
       toast.success('OTP resent to your email.');
     } catch (error) {
+    console.log(error)
+
       toast.error(error.response?.data?.message || 'Failed to resend OTP.');
     }
   };

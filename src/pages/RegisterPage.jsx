@@ -52,16 +52,20 @@ const RegisterPage = () => {
   // Handle changes in input fields
   const handleChange = (e) => {
     const { id, value } = e.target;
-    setUserData((prevData) => ({
-      ...prevData,
-      [id]: value,
-    }));
-
+    setUserData((prevData) => {
+      const newData = {
+        ...prevData,
+        [id]: value,
+      };
+      // console.log("Updated userData:", newData); // Debugging
+      return newData;
+    });
+  
     if (id === 'password') {
       checkPasswordStrength(value);
     }
-    if (id === 'referral') setReferal(value);
   };
+  
 
     // Check password strength
     const checkPasswordStrength = (password) => {
@@ -140,8 +144,9 @@ const RegisterPage = () => {
 
   // Resend OTP handler
   const handleResendOtp = async () => {
-    setCountdown(60); // Reset countdown
+    setCountdown(240); // Reset countdown
     setResendEnabled(false); // Disable resend button again
+    // console.log(userData.username)
     await resendOtp(userData.email);
   };
   const manual_uri = `https://wa.me/+2349164661632?text=Hi%20Dataease!%20I%20am%20trying%20to%20manually%20verify%20my%20account.%20My%20username%20is%20${encodeURIComponent(userData.username)}.`
@@ -208,7 +213,7 @@ const RegisterPage = () => {
                       id="email"
                       type="email"
                       value={userData.email}
-                      onChange={handleChange}
+                      onChange={handleChange} // Should call handleChange
                       className="task-input"
                       placeholder="email@example.com"
                       required
