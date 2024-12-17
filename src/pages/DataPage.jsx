@@ -193,46 +193,59 @@ const DataPage = () => {
     { id: '3', name: '9MOBILE', logo: mobile },
     { id: '4', name: 'GLO', logo: Glo },
   ];
-  if (data_vendor=='subsizi'){
-    useEffect(()=>{
-      if (selectedNetwork1){
-        setAmount1(0)
-        setSelectedPlan1(null)
-        setMonthValidate1('')
+  if (data_vendor === 'subsizi') {
+    useEffect(() => {
+      if (selectedNetwork1) {
+        // Reset all relevant states when network changes
+        setAmount1(0);
+        setSelectedPlan1(null);
+        setMonthValidate1('');
+        setDataType1(''); // Clear data type
+        setDataPlans1([]); // Clear data plans
+        setDataTypes1([]); // Clear available data types
         setIsLoading1(true);
-        authAxios.post(`/data/`, { 'action': 'data_info', network: selectedNetwork1.name })
-        .then((res)=>{
-          // console.log(res)
-          const networkData1 = res.data.message;
-          setDataTypes1(Object.keys(networkData1));
-          setDataPlans([]);
-        }).catch((err)=>{
-          console.log(err)
-        }).finally(()=>{
-          setIsLoading1(false);
-        })
+  
+        authAxios
+          .post(`/data/`, { action: 'data_info', network: selectedNetwork1.name })
+          .then((res) => {
+            const networkData1 = res.data.message;
+            setDataTypes1(Object.keys(networkData1)); // Set available data types
+            // console.log(selectedNetwork1.name);
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+          .finally(() => {
+            setIsLoading1(false);
+          });
       }
-    },[selectedNetwork1])
-
-    useEffect(()=>{
-      if (dataType1 && selectedNetwork1){
+    }, [selectedNetwork1]);
+  
+    useEffect(() => {
+      if (dataType1 && selectedNetwork1) {
+        // console.log(dataType1);
         setIsLoading1(true);
-        authAxios.post('/data/', {'action': 'get_plans', network: selectedNetwork1.name, 'data_type':dataType1})
-        .then((res)=>{
-          // console.log(res)
-          setDataPlans1(res.data.message);
-          const defaultPlan = res.data.message[0]; // Set default plan to the first option
-          setSelectedPlan1(defaultPlan);
-          setAmount1(parseFloat(defaultPlan.plan_amount)+8);
-          setMonthValidate1(defaultPlan.month_validate);
-        }).catch((err)=>{
-
-        }).finally(()=>{
-          setIsLoading1(false);
-        })
+        authAxios
+          .post('/data/', {
+            action: 'get_plans',
+            network: selectedNetwork1.name,
+            data_type: dataType1,
+          })
+          .then((res) => {
+            setDataPlans1(res.data.message);
+            setSelectedPlan1(null); // User must manually select a plan
+            setAmount1(0); // Reset amount
+            setMonthValidate1(''); // Reset month validation
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+          .finally(() => {
+            setIsLoading1(false);
+          });
       }
-    },[dataType1, selectedNetwork1])
-  }
+    }, [dataType1, selectedNetwork1]);
+  }  
 
   // the pin and payment section for subsizi
   const handlePay1 = () => {

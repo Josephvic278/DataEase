@@ -144,7 +144,7 @@ export const AuthProvider = ({ children }) => {
       toast.error(errors.phone_number[0]);
     }else if (errors.username) {
       toast.error(errors.username[0]);
-    }else if (errors.last_name[0]){
+    }else if (errors.last_name){
       toast.error('Ensure you have your first and last name!');
     }
     else if (error.response?.status === 401) {

@@ -52,7 +52,7 @@ const LoginPage = () => {
       }
     } catch (err) {
       console.log(err);
-      toast.error('Login failed. Please check your credentials.');
+      toast.error('Login failed: Please check your username or your password.');
     } finally {
       setLoading(false); // Stop loading after the process completes
     }

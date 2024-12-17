@@ -31,7 +31,7 @@ const RegisterPage = () => {
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
   const [verifying, setVerifying] = useState(false);
-  const [countdown, setCountdown] = useState(60);
+  const [countdown, setCountdown] = useState(240);
   const [resendEnabled, setResendEnabled] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
