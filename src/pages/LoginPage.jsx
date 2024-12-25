@@ -51,8 +51,15 @@ const LoginPage = () => {
         navigate('/register/');
       }
     } catch (err) {
-      console.log(err);
-      toast.error('Login failed: Please check your username or your password.');
+      const error = err.response.data.detail
+      // console.log(error);
+      if (err.response.data.detail == 'Not found.'){
+        toast.error(`User ${error} check your username and try again`);
+      }else if (error == 'No active account found with the given credentials'){
+        toast.error('Password incorrect. Please try again.');
+      }else{
+        toast.error('Login failed: Please check your username or your password.');
+      }
     } finally {
       setLoading(false); // Stop loading after the process completes
     }
