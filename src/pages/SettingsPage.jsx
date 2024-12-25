@@ -208,7 +208,7 @@ const SettingsPage = () => {
                 <Label htmlFor="confirm_pin">Confirm New PIN</Label>
                 <Input maxLength='4' id="confirm_pin" type="password" value={pinData.confirm_pin} required onChange={(e) => setPinData({ ...pinData, confirm_pin: e.target.value })} className="h-12" />
                 <div className="flex justify-between">
-                  <Button label="Change PIN" type="submit" className="w-full h-14 rounded-sm bg-vibrantGreen text-white hover:bg-green-600" />
+                  <Button label="Set PIN" type="submit" className="w-full h-14 rounded-sm bg-vibrantGreen text-white hover:bg-green-600" />
 
                   {/* <Button label=""  className="w-48 h-11 rounded-sm bg-yellow-500 text-white hover:bg-yellow-600" type="button" /> */}
                 </div>

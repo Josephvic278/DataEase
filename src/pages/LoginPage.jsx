@@ -88,7 +88,7 @@ const LoginPage = () => {
                 id="username"
                 type="text"
                 className="task-input"
-                placeholder="email@example.com"
+                placeholder="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
@@ -102,7 +102,7 @@ const LoginPage = () => {
                   id="password"
                   value={password}
                   className="task-input"
-                  placeholder="helloDataEase@1"
+                  placeholder="password"
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
