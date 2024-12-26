@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { createAuthAxios } from '@/api/authAxios';
 import authAxios from '@/api/authAxios';
 import ReferralCard from '../components/ReferralCard';
+import { TodaySummary } from '.';
 import { useState } from 'react';
 const DashboardPage = () => {
   const authAxios = createAuthAxios()
@@ -224,8 +225,9 @@ const DashboardPage = () => {
               
       <TransactionSection/>
       <div className="p-2 -mt-16">
-      <ReferralCard />
-    </div>
+        <ReferralCard />
+      </div>
+      {/* <TodaySummary /> */}
     </div>
   );
 };

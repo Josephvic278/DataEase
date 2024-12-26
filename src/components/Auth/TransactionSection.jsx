@@ -1,20 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { createAuthAxios } from '@/api/authAxios';
-import { format } from 'date-fns';
+import { format, isToday } from 'date-fns';
 
 const TransactionSection = () => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [todaySpent, setTodaySpent] = useState(0);
+  const [todayFunded, setTodayFunded] = useState(0);
   const authAxios = createAuthAxios();
 
   useEffect(() => {
     authAxios.get('/payments/')
       .then((res) => {
-        // Parse, sort by date, and limit to 3 most recent transactions
-        const sortedTransactions = JSON.parse(res.data.message)
+        const allTransactions = JSON.parse(res.data.message);
+        const sortedTransactions = allTransactions
           .sort((a, b) => new Date(b.date_created) - new Date(a.date_created))
           .slice(0, 3); // Limit to 3 most recent transactions
+
+        const todayTransactions = allTransactions.filter(transaction => isToday(new Date(transaction.date_created)));
+        const spent = todayTransactions
+          .filter(transaction => transaction.credit_type === 'debit')
+          .reduce((sum, transaction) => sum + transaction.amount, 0);
+        const funded = todayTransactions
+          .filter(transaction => transaction.credit_type !== 'debit')
+          .reduce((sum, transaction) => sum + transaction.amount, 0);
+
         setTransactions(sortedTransactions);
+        setTodaySpent(spent);
+        setTodayFunded(funded);
         setLoading(false);
       })
       .catch((err) => {
@@ -51,11 +64,23 @@ const TransactionSection = () => {
           </svg>
         </div>
       ) : (
-        <div className="mt-4 space-y-4">
-          {transactions.map((transaction) => (
-            <TransactionItem key={transaction.id} transaction={transaction} />
-          ))}
-        </div>
+        <>
+          <div className="mt-4 space-y-4">
+            {transactions.map((transaction) => (
+              <TransactionItem key={transaction.id} transaction={transaction} />
+            ))}
+          </div>
+          <div className="mt-8 flex justify-between">
+            <div className="p-4 bg-white dark:bg-slate-800 rounded-lg shadow-md shadow-slate-100 border border-neutral-300 w-1/2 mr-2">
+              <h3 className="text-lg font-semibold text-black dark:text-white">Money Spent Today</h3>
+              <p className="text-2xl font-bold text-red-500">₦{todaySpent}</p>
+            </div>
+            <div className="p-4 bg-white dark:bg-slate-800 rounded-lg shadow-md shadow-slate-100 border border-neutral-300 w-1/2 ml-2">
+              <h3 className="text-lg font-semibold text-black dark:text-white">Money Funded Today</h3>
+              <p className="text-2xl font-bold text-green-500">₦{todayFunded}</p>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );
@@ -85,7 +110,6 @@ const TransactionItem = ({ transaction }) => {
         <p className="text-sm text-gray">{format(new Date(date_created), 'MMM dd, h:mm a')}</p>
         <p className="text-sm text-gray">{credit_type === 'debit' ? 'Product purchase' : remark}</p>
       </div>
-
 
       {/* Amount and Status */}
       <div className="text-right">

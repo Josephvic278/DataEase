@@ -56,6 +56,8 @@ const TransactionsPurchase = () => {
             <th className="px-4 py-2 border-b">Status</th>
             <th className="px-4 py-2 border-b">Reference ID</th>
             <th className="px-4 py-2 border-b">Phone Number</th>
+            <th className="px-4 py-2 border-b">Balance Before</th>
+            <th className="px-4 py-2 border-b">Balance After</th>
             <th className="px-4 py-2 border-b">Action</th>
           </tr>
         </thead>
@@ -71,6 +73,8 @@ const TransactionsPurchase = () => {
               </td>
               <td className="px-4 py-2 border-b text-center">{transaction.reference}</td>
               <td className="px-4 py-2 border-b text-center">{transaction.mobile_number}</td>
+              <td className="px-4 py-2 border-b text-center">{transaction.balance_before}</td>
+              <td className="px-4 py-2 border-b text-center">{transaction.balance_after}</td>
               {showPlan ?(
                 <td className="px-4 py-2 border-b font-bold"><a href={`${currentUrl}/reciept?id=${transaction.id}&type=data`}
                 className='flex items-center'>View <i class='bx bx-book-content ml-2' ></i></a></td>

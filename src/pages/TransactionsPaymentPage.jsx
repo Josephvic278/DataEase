@@ -55,6 +55,8 @@ const TransactionsPaymentPage = () => {
                 <th className="px-4 py-2 border-b">Remark</th>
                 <th className="px-4 py-2 border-b">Status</th>
                 <th className="px-4 py-2 border-b">Reference ID</th>
+                <th className="px-4 py-2 border-b">Balance Before</th>
+                <th className="px-4 py-2 border-b">Balance After</th>
                 <th className="px-4 py-2 border-b">Action</th>
               </tr>
             </thead>
@@ -67,7 +69,9 @@ const TransactionsPaymentPage = () => {
                   <td className="px-4 py-2 border-b">{transaction.type}</td>
                   <td className="px-4 py-2 border-b">{transaction.remark}</td>
                   <td className={`px-4 py-2 border-b font-bold ${getStatusClass(transaction.status)}`}>{transaction.status}</td>
-                  <td className="px-4 py-2 border-b">{transaction.reference_id}</td>
+                  <td className="px-4 py-2 border-b text-center">{transaction.reference_id}</td>
+                  <td className="px-4 py-2 border-b">{transaction.balance_before}</td>
+                  <td className="px-4 py-2 border-b">{transaction.balance_after}</td>
                   <td className="px-4 py-2 border-b font-bold"><a href={`${currentUrl}/reciept?id=${transaction.id}&type=fund`}
                 className='flex items-center'>View <i class='bx bx-book-content ml-2' ></i></a></td>
                 </tr>

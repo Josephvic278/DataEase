@@ -5,6 +5,7 @@ import html2canvas from 'html2canvas';
 const RecieptPage = () => {
   const [reciept, setReciept] = useState([]);
   const [error, setError] = useState(null);
+  const [type, setType] = useState('');
   const authAxios = createAuthAxios();
   const divRef = useRef(null);
 
@@ -12,6 +13,7 @@ const RecieptPage = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const reciept_id = urlParams.get('id');
     const type = urlParams.get('type');
+    setType(type);
 
     authAxios
       .post('/purchases/', { action: 'reciept', id: reciept_id, type })
@@ -63,9 +65,9 @@ const RecieptPage = () => {
 
                   return (
                     <div key={index} className="text-gray-700 text-sm">
-                      {parsedData.credit_type == 'credit'?(
+                      {parsedData.credit_type == 'credit' ? (
                         <p className="font-bold text-3xl">₦{parsedData.amount}</p>
-                      ):(
+                      ) : (
                         <p className="font-bold text-3xl text-red-500">- ₦{parsedData.amount}</p>
                       )}
                       <hr className="mt-4" />
@@ -89,21 +91,23 @@ const RecieptPage = () => {
                       </div>
                       <hr className="mt-4" />
                       <div className="w-full mt-5 flex items-center justify-between">
-                        <p className="text-left text-gray">Recipient</p>
-                        <p className="font-medium">{parsedData.mobile_number}</p>
+                        <p className="text-left text-gray">{type === 'fund' ? 'Remark' : 'Recipient'}</p>
+                        <p className="font-medium">{type === 'fund' ? parsedData.remark : parsedData.mobile_number}</p>
                       </div>
                       <hr className="mt-4" />
                       <div className="w-full mt-5 flex items-center justify-between">
                         <p className="text-left text-gray">Amount</p>
                         <p className="font-medium">₦{parsedData.amount}</p>
                       </div>
-                      {parsedData.network?(<div className="w-full mt-5 flex items-center justify-between">
-                        <p className="text-left text-gray">Network</p>
-                        <p className="font-medium">{parsedData.network}</p>
-                      </div>):(
+                      {parsedData.network ? (
                         <div className="w-full mt-5 flex items-center justify-between">
-                        <p className="text-left text-gray">Amount</p>
-                        <p className="font-medium">₦{parsedData.id}</p>
+                          <p className="text-left text-gray">Network</p>
+                          <p className="font-medium">{parsedData.network}</p>
+                        </div>
+                      ) : (
+                        <div className="w-full mt-5 flex items-center justify-between">
+                          <p className="text-left text-gray">Amount</p>
+                          <p className="font-medium">₦{parsedData.id}</p>
                         </div>
                       )}
                       {parsedData.plan && (
@@ -126,11 +130,11 @@ const RecieptPage = () => {
                 })
               ) : (
                 <div className="flex justify-center items-center h-64">
-                <svg className="animate-spin h-10 w-10 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                </svg>
-              </div>
+                  <svg className="animate-spin h-10 w-10 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                  </svg>
+                </div>
               )}
             </div>
           )}

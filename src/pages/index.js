@@ -28,7 +28,7 @@ import { Plans } from '@/components'
 import ForgotPassword from './ForgotPassword'
 import DataPrices from './DataPrices'
 import TransactionsSection from './TransactionsSection'
-
+import TodaySummary from './TodaySummary'
 export {
 	AdminPage,
 	DataPage,
@@ -58,5 +58,6 @@ export {
 	payment_confirmation,
 	Plans,
 	ForgotPassword,
-	TransactionsSection
+	TransactionsSection,
+	TodaySummary,
 }
