@@ -72,12 +72,22 @@ const TransactionSection = () => {
           </div>
           <div className="mt-8 flex justify-between">
             <div className="p-4 bg-white dark:bg-slate-800 rounded-lg shadow-md shadow-slate-100 border border-neutral-300 w-1/2 mr-2">
-              <h3 className="text-lg font-semibold text-black dark:text-white">Money Spent Today</h3>
-              <p className="text-2xl font-bold text-red-500">₦{todaySpent}</p>
+              <h3 className="text-lg font-semibold text-black dark:text-white">Today's Debit</h3>
+              <div className="flex items-center mt-2">
+                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-red-500 bg-opacity-80 mr-4">
+                  <i className="bx bx-log-out text-2xl text-white"></i>
+                </div>
+                <p className="text-2xl font-bold text-red-500">₦{todaySpent}</p>
+              </div>
             </div>
             <div className="p-4 bg-white dark:bg-slate-800 rounded-lg shadow-md shadow-slate-100 border border-neutral-300 w-1/2 ml-2">
-              <h3 className="text-lg font-semibold text-black dark:text-white">Money Funded Today</h3>
-              <p className="text-2xl font-bold text-green-500">₦{todayFunded}</p>
+              <h3 className="text-lg font-semibold text-black dark:text-white">Today's Credit</h3>
+              <div className="flex items-center mt-2">
+                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-green-500 bg-opacity-80 mr-4">
+                  <i className="bx bx-log-in text-2xl text-white"></i>
+                </div>
+                <p className="text-2xl font-bold text-green-500">₦{todayFunded}</p>
+              </div>
             </div>
           </div>
         </>
