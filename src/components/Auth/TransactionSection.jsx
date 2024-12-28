@@ -17,7 +17,7 @@ const TransactionSection = () => {
           .sort((a, b) => new Date(b.date_created) - new Date(a.date_created))
           .slice(0, 3); // Limit to 3 most recent transactions
 
-        const todayTransactions = allTransactions.filter(transaction => isToday(new Date(transaction.date_created)));
+        const todayTransactions = allTransactions.filter(transaction => isToday(new Date(transaction.date_created)) && transaction.status === 'Success');
         const spent = todayTransactions
           .filter(transaction => transaction.credit_type === 'debit')
           .reduce((sum, transaction) => sum + transaction.amount, 0);
@@ -38,12 +38,12 @@ const TransactionSection = () => {
 
   return (
     <div className="mt-5 px-3 pb-16">
-      <h2 className="text-2xl font-bold text-black dark:text-white">Recent Transactions</h2>
+      <h2 className="text-2xl font-bold text-white dark:text-white">Recent Transactions</h2>
 
       {loading ? (
         <div className="flex justify-center items-center h-64">
           <svg
-            className="animate-spin h-10 w-10 text-green-500"
+            className="animate-spin h-10 w-10 text-secondaryBlue"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -71,8 +71,8 @@ const TransactionSection = () => {
             ))}
           </div>
           <div className="mt-8 flex justify-between">
-            <div className="p-4 bg-white dark:bg-slate-800 rounded-lg shadow-md shadow-slate-100 border border-neutral-300 w-1/2 mr-2">
-              <h3 className="text-lg font-semibold text-black dark:text-white">Today's Debit</h3>
+            <div className="p-4 bg-slate-800 dark:bg-slate-800 rounded-lg shadow-md shadow-slate-800 border border-slate-800 w-1/2 mr-2">
+              <h3 className="text-lg font-semibold text-white dark:text-white">Today's Debit</h3>
               <div className="flex items-center mt-2">
                 <div className="w-10 h-10 flex items-center justify-center rounded-full bg-red-500 bg-opacity-80 mr-4">
                   <i className="bx bx-log-out text-2xl text-white"></i>
@@ -80,8 +80,8 @@ const TransactionSection = () => {
                 <p className="text-2xl font-bold text-red-500">₦{todaySpent}</p>
               </div>
             </div>
-            <div className="p-4 bg-white dark:bg-slate-800 rounded-lg shadow-md shadow-slate-100 border border-neutral-300 w-1/2 ml-2">
-              <h3 className="text-lg font-semibold text-black dark:text-white">Today's Credit</h3>
+            <div className="p-4 bg-slate-800 dark:bg-slate-800 rounded-lg shadow-md shadow-slate-800 border border-slate-800 w-1/2 ml-2">
+              <h3 className="text-lg font-semibold text-white dark:text-white">Today's Credit</h3>
               <div className="flex items-center mt-2">
                 <div className="w-10 h-10 flex items-center justify-center rounded-full bg-green-500 bg-opacity-80 mr-4">
                   <i className="bx bx-log-in text-2xl text-white"></i>
@@ -106,19 +106,19 @@ const TransactionItem = ({ transaction }) => {
       : 'text-green-500'; // Default to green if not 'debit'
 
   return (
-    <div className="flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-lg shadow-md shadow-slate-100 border border-neutral-300">
+    <div className="flex items-center justify-between p-4 bg-slate-800 dark:bg-slate-800 rounded-lg shadow-md shadow-slate-800 border border-slate-800">
       {/* Funding Icon */}
-      <div className="w-12 h-12 lg:w-16 lg:h-16 flex items-center justify-center rounded-full bg-green-500 bg-opacity-80">
+      <div className="w-12 h-12 lg:w-16 lg:h-16 flex items-center justify-center rounded-full bg-secondaryBlue bg-opacity-80">
         <i className="pi pi-money-bill text-xl lg:text-3xl text-white"></i>
       </div>
 
       {/* Transaction Details */}
       <div className="flex-1 ml-4">
-        <h3 className="text-lg font-semibold text-black text-opacity-90 dark:text-white">
+        <h3 className="text-lg font-semibold text-white text-opacity-90 dark:text-white">
           {credit_type === 'debit' ? 'Purchase' : 'Funding'}
         </h3>
-        <p className="text-sm text-gray">{format(new Date(date_created), 'MMM dd, h:mm a')}</p>
-        <p className="text-sm text-gray">{credit_type === 'debit' ? 'Product purchase' : remark}</p>
+        <p className="text-sm text-slate-400">{format(new Date(date_created), 'MMM dd, h:mm a')}</p>
+        <p className="text-sm text-slate-400">{credit_type === 'debit' ? 'Product purchase' : remark}</p>
       </div>
 
       {/* Amount and Status */}
