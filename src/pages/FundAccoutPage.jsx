@@ -76,18 +76,18 @@ const FundAccountPage = () => {
                   >
                     <i className='bx bx-credit-card text-xl absolute top-3 right-3 text-gray-600'></i>
 
-                    <h3 className='text-gray-700 text-sm font-semibold mb-2'>{account.bankname}</h3>
+                    <h3 className='text-gray-700 text-sm font-semibold mb-2'>{account.bankName}</h3>
                     <div className='text-gray-800 text-lg font-semibold tracking-wide mb-6 font-poppins'>
-                      {formatAccountNumber(account.acctno)}
+                      {formatAccountNumber(account.accountNumber)}
                     </div>
                     <div className='flex justify-between'>
                       <div className='text-gray-700 text-xs'>
                         <p className='font-light text-xs'>Account Name</p>
-                        <p className='font-semibold'>{account.acctname}</p>
+                        <p className='font-semibold'>{account.accountName}</p>
                       </div>
                       <div className='text-gray-700 text-right text-xs'>
                         <p className='font-light'>Tracking Id</p>
-                        <p className='font-semibold'>{account.trackingid}</p>
+                        <p className='font-semibold'>{account.accountReference}</p>
                       </div>
                     </div>
                   </div>
@@ -97,7 +97,7 @@ const FundAccountPage = () => {
             </div>
           )}
 
-         {/* {isAccountNull && (
+         {isAccountNull && (
             <Link to='/virtual_account' className='w-full max-w-lg'>
               <div className='bg-green-100 rounded-lg p-6 flex w-full cursor-pointer shadow-sm'>
                 <div className='flex items-center w-14 bg-green-300 rounded-md justify-center'>
@@ -109,7 +109,7 @@ const FundAccountPage = () => {
                 </div>
               </div>
             </Link>
-          )} */}
+          )}
 
           <Link to='/manual_funding' className='w-full max-w-lg'>
             <div className='bg-yellow-100 rounded-lg p-6 flex w-full cursor-pointer mt-5 shadow-sm'>
@@ -147,11 +147,11 @@ const FundAccountPage = () => {
               <i className='bx bx-x cursor-pointer text-2xl' onClick={closeModal}></i>
             </div>
             <div className='mt-4'>
-              <p><strong>Bank Name:</strong> {selectedAccount.bankname}</p>
-              <p><strong>Account Number:</strong> {selectedAccount.acctno}</p>
-              <p><strong>Account Name:</strong> {selectedAccount.acctname}</p>
-              <p><strong>Tracking ID:</strong> {selectedAccount.trackingid}</p>
-              <p><strong>Bank Code:</strong> {selectedAccount.bankcode}</p>
+              <p><strong>Bank Name:</strong> {selectedAccount.bankName}</p>
+              <p><strong>Account Number:</strong> {selectedAccount.accountNumber}</p>
+              <p><strong>Account Name:</strong> {selectedAccount.accountName}</p>
+              <p><strong>Tracking ID:</strong> {selectedAccount.accountReference}</p>
+              <p><strong>Bank Code:</strong> {selectedAccount.bankCode}</p>
             </div>
             <button onClick={closeModal} className='mt-4 w-full bg-vibrantGreen text-white py-2 rounded-lg'>
               Close

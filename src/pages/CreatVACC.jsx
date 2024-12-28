@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react'; 
 import authAxios from '@/api/authAxios';
-// import { Toast } from 'react-toastify/dist/components';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { createAuthAxios } from '@/api/authAxios';
+
 const CreatVACC = () => {
-  const authAxios = createAuthAxios()
+  const authAxios = createAuthAxios();
   const navigate = useNavigate();
 
   useEffect(() => {
     authAxios.get('/virtual_account/')
       .then((res) => {
-        // console.log(res.data.message);
         if (res.data.message != null) {
-          // navigate('/dashboard')
+          navigate('/dashboard')
         } else {
           
         }
@@ -24,33 +23,19 @@ const CreatVACC = () => {
       });
   }, []);
 
-  const [amount, setAmount] = useState('');
-  const [bank, setBank] = useState('035'); // Default to Wema/Alat
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [bvn, setBvn] = useState('');
-  const [dob, setDOB] = useState('');
   const [loading, setLoading] = useState(false); // New state for loading
-
-  // Bank data
-  const banks = [
-    // { name: "Moniepoint", code: "035" },
-    { name: "Wema", code: "035" },
-
-    { name: "Providus", code: "101" },
-    { name: "Access Bank", code: "044" }
-  ];
 
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true); // Start loader when form is submitted
     const formData = {
-      bank,
       firstName,
       lastName,
       bvn,
-      dob,
     };
     authAxios.post('/virtual_account/', formData)
       .then(res => {
@@ -68,10 +53,7 @@ const CreatVACC = () => {
       })
       .catch(err => {
         console.error(err.response?.data.message);
-        toast.error(err.response?.data.message)  
-        // if (err.response?.data.message.status == false){
-        //   toast.error(err.response?.data.message.message)  
-        // }
+        toast.error(err.response?.data.message);
         setLoading(false); // Stop loader on error
       });
   };
@@ -80,23 +62,6 @@ const CreatVACC = () => {
     <div className="max-w-[74rem] mx-auto p-5 bg-white border border-vibrantGreen border-opacity-20 rounded-lg">
       <h1 className="text-2xl text-center lg:text-left text-slate-800 font-semibold mb-4">Create virtual account</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-
-        {/* Select Bank Dropdown */}
-        <div>
-          <label className="block text-neutral-800 font-medium mb-2">Select Bank</label>
-          <select
-            value={bank}
-            onChange={(e) => setBank(e.target.value)}
-            className="w-full p-2 border rounded-md shadow-sm bg-transparent"
-          >
-            {/* Map over banks to create option elements */}
-            {banks.map((bank) => (
-              <option key={bank.code} value={bank.code}>
-                {bank.name}
-              </option>
-            ))}
-          </select>
-        </div>
 
         {/* First Name Input */}
         <div>
@@ -137,37 +102,6 @@ const CreatVACC = () => {
             placeholder="Enter your BVN"
           />
         </div>
-
-          {/* Date of Birth Input */}
-          <div>
-          <label className="block text-neutral-800 font-medium mb-2">BVN</label>
-          <input
-            type="date"
-            value={dob}
-            required
-            onChange={(e) => setDOB(e.target.value)}
-            maxLength="11"  // Set maximum length to 11
-            className="w-full p-2 border rounded-md shadow-sm"
-            placeholder="Date of Birth"
-          />
-        </div>
-
-        {/* NIN Input (only shows if GTBank is selected) */}
-        {bank === 'GTBank' && (
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">NIN</label>
-            <p className='text-sm -mt-3 mb-3 text-red-700'>*required for GTBank</p>
-            <input
-              type="text"
-              value={nin}
-              required
-              onChange={(e) => setNin(e.target.value)}
-              maxLength="11"
-              className="w-full p-2 border rounded-md shadow-sm"
-              placeholder="Enter your NIN"
-            />
-          </div>
-        )}
 
         {/* Submit Button */}
         <div>
