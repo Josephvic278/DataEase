@@ -43,7 +43,7 @@ const TransactionSection = () => {
       {loading ? (
         <div className="flex justify-center items-center h-64">
           <svg
-            className="animate-spin h-10 w-10 text-blue-500"
+            className="animate-spin h-10 w-10 text-vibrantGreen"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -108,8 +108,8 @@ const TransactionItem = ({ transaction }) => {
   return (
     <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-md border border-gray-300">
       {/* Funding Icon */}
-      <div className="w-12 h-12 lg:w-16 lg:h-16 flex items-center justify-center rounded-full bg-blue-100">
-        <i className="pi pi-money-bill text-xl lg:text-3xl text-blue-500"></i>
+      <div className="w-12 h-12 lg:w-16 lg:h-16 flex items-center justify-center rounded-full bg-green-100">
+        <i className="pi pi-money-bill text-xl lg:text-3xl text-vibrantGreen"></i>
       </div>
 
       {/* Transaction Details */}
