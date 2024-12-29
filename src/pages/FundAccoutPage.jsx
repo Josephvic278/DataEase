@@ -96,6 +96,7 @@ const FundAccountPage = () => {
                 ))}
               </div>
               <p className='text-gray text-sm'>Make a transfer to your virtual account above and your wallet will be credited automatically</p>
+              <b>Fee: 1.5%</b>
             </div>
           )}
 
@@ -113,18 +114,6 @@ const FundAccountPage = () => {
             </Link>
           )}
 
-          <Link to='/manual_funding' className='w-full max-w-lg'>
-            <div className='bg-yellow-100 rounded-lg p-6 flex w-full cursor-pointer mt-5 shadow-sm'>
-              <div className='flex items-center w-14 bg-yellow-300 rounded-md justify-center'>
-                <i className='bx bxs-wallet-alt text-2xl text-white'></i>
-              </div>
-              <div className='ml-3'>
-                <h1 className='text-xl font-semibold'>Manual Funding</h1>
-                <p>Fund account via admin</p>
-              </div>
-            </div>
-          </Link>
-
           {/* Link to Monnify Funding Page */}
           <Link to='/monnify' className='w-full max-w-lg'>
             <div className='bg-blue-100 rounded-lg p-6 flex w-full cursor-pointer mt-5 shadow-sm'>
@@ -134,6 +123,18 @@ const FundAccountPage = () => {
               <div className='ml-3'>
                 <h1 className='text-xl font-semibold'>Fund with Monnify</h1>
                 <p>Fund your account via Monnify</p>
+              </div>
+            </div>
+          </Link>
+
+          <Link to='/manual_funding' className='w-full max-w-lg'>
+            <div className='bg-yellow-100 rounded-lg p-6 flex w-full cursor-pointer mt-5 shadow-sm'>
+              <div className='flex items-center w-14 bg-yellow-300 rounded-md justify-center'>
+                <i className='bx bxs-wallet-alt text-2xl text-white'></i>
+              </div>
+              <div className='ml-3'>
+                <h1 className='text-xl font-semibold'>Manual Funding</h1>
+                <p>Fund account via admin</p>
               </div>
             </div>
           </Link>
