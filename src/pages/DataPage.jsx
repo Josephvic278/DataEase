@@ -180,7 +180,7 @@ const DataPage = () => {
     const planSizeInGB = extractPlanSizeInGB(plan.plan_name);
   
     // Determine additional cost
-    const additionalCost = planSizeInGB >= 5 ? 25 : 8;
+    const additionalCost = planSizeInGB >= 5 ? 30 : 8;
   
     // Update amount and month validation
     setAmount1(parseFloat(plan.plan_amount) + additionalCost);
