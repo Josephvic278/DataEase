@@ -147,9 +147,9 @@ const DashboardPage = () => {
           <div></div>
         ):(
           <div className='w-full bg-green-200 rounded-md p-2 flex justify-between items-center'>
-            <p>Dont have a virtual wallet?</p>
+            <p>Don't have a virtual wallet?</p>
             <div className='flex items-center mr-1'>
-            <button className='h-8 w-32 bg-green-500 rounded-md text-white'>Create one <i class='bx bxs-star text-yellow-400'></i></button>
+            <button className='h-8 w-32 bg-green-500 rounded-md text-white'>Create one <i class='bx bxs-star text-yellow-300 animate-bounce'></i></button>
             </div>
           </div>
         )}
