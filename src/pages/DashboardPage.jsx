@@ -113,46 +113,21 @@ const DashboardPage = () => {
               </div>
             </div>
           </div>
-          
-          {/* Styles for screens < 408px */}
-          <style>
-            {`
-              @media (max-width: 408px) {
-                #tbd {
-                  flex-direction: column  !important;
-                  padding: 1rem;
-                }
-                .h-14 {
-                  height: 3rem !important;
-                }
-                .px-14 {
-                  padding-left: 2rem !important;
-                  padding-right: 2rem !important;
-                }
-                .gap-2 {
-                  gap: 0.5rem !important;
-                }
-                .w-40 {
-                  width: 10rem !important;
-                }
-                .text-2xl {
-                  font-size: 1.25rem !important;
-                }
-              }
-            `}
-          </style>
         </div>
-      
+        <div className='block w-full md:hidden'>
         {user?.account_num?(
           <div></div>
         ):(
           <div className='w-full bg-green-200 rounded-md p-2 flex justify-between items-center'>
             <p>Don't have a virtual wallet?</p>
             <div className='flex items-center mr-1'>
+            <Link to='/virtual_account'>
             <button className='h-8 w-32 bg-green-500 rounded-md text-white'>Create one <i class='bx bxs-star text-yellow-300 animate-bounce'></i></button>
+            </Link>
             </div>
           </div>
         )}
+        </div>
         {/* Features Section */}
         <div className="w-full md:w-[40%] sm:h-80 bg-vibrantGreeni bg-opacity-10 border border-opacity-50 border-vibrantGreen rounded-2xl py-8 sm:mt-0">
           <h2 className="text-gray-800 text-left font-medium  px-4 lg:text-left text-lg sm:text-xl mb-6">Features</h2>
@@ -231,7 +206,20 @@ const DashboardPage = () => {
           </div>
         </div>
       </div>
-              
+      <div className='hidden w-full md:flex justify-center mt-4'>
+        {user?.account_num?(
+          <div></div>
+        ):(
+          <div className='w-98 bg-green-200 rounded-md p-2 flex justify-between items-center'>
+            <p>Don't have a virtual wallet?</p>
+            <div className='flex items-center mr-1'>
+            <Link to='/virtual_account'>
+            <button className='h-8 w-32 bg-green-500 rounded-md text-white'>Create one <i class='bx bxs-star text-yellow-300 animate-bounce'></i></button>
+            </Link>
+            </div>
+          </div>
+        )}
+        </div>
       <TransactionSection/>
       <div className="p-2 -mt-16">
         <ReferralCard />
