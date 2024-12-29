@@ -18,6 +18,8 @@ const AdminPage = () => {
   const { user, loading } = useContext(DashboardContext);
   const [searchTerm1, setSearchTerm1] = useState(""); // Track the search input
   const [info, setInfo] = useState('');
+  const [totalCredited, setTotalCredited] = useState(0);
+  const [totalDebited, setTotalDebited] = useState(0);
 
 
   const [expandedSection, setExpandedSection] = useState(null); // Track which section is open
@@ -229,6 +231,27 @@ const AdminPage = () => {
     }
   };
 
+  useEffect(() => {
+    authAxios.post('/payments/', {'table':'all'})
+      .then((res) => {
+        const allTransactions = JSON.parse(res.data.message);
+        const successfulTransactions = allTransactions.filter(transaction => transaction.status === 'Success');
+        // console.log(res.data.message)
+        const credited = successfulTransactions
+          .filter(transaction => transaction.credit_type === 'credit')
+          .reduce((sum, transaction) => sum + transaction.amount, 0);
+        const debited = successfulTransactions
+          .filter(transaction => transaction.credit_type === 'debit')
+          .reduce((sum, transaction) => sum + transaction.amount, 0);
+
+        setTotalCredited(credited);
+        setTotalDebited(debited);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-100 p-5">
       <header className="flex justify-between items-center mb-8">
@@ -420,6 +443,27 @@ const AdminPage = () => {
           </div>
         </div>
       )}
+
+    <div className="mt-8 flex justify-between">
+        <div className="p-4 bg-white rounded-lg shadow-md border border-gray-300 w-1/2 mr-2">
+          <h3 className="text-lg font-semibold text-gray-800">Total Credited</h3>
+          <div className="flex items-center mt-2">
+            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-green-100 mr-4">
+              <i className="bx bx-log-in text-2xl text-green-500"></i>
+            </div>
+            <p className="text-2xl font-bold text-green-500">₦{totalCredited}</p>
+          </div>
+        </div>
+        <div className="p-4 bg-white rounded-lg shadow-md border border-gray-300 w-1/2 ml-2">
+          <h3 className="text-lg font-semibold text-gray-800">Total Debited</h3>
+          <div className="flex items-center mt-2">
+            <div className="w-10 h-10 flex items-center justify-center rounded-full bg-red-100 mr-4">
+              <i className="bx bx-log-out text-2xl text-red-500"></i>
+            </div>
+            <p className="text-2xl font-bold text-red-500">₦{totalDebited}</p>
+          </div>
+        </div>
+      </div>
       {/* User Details Modal remains unchanged... */}
       <div className="space-y-4 mt-7">
       {/* Search Bar */}

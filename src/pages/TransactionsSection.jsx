@@ -103,6 +103,8 @@ const TransactionsSection = ({
                 <th className="px-4 py-2 border-b">Date Created</th>
                 {showPlan && <th className="px-4 py-2 border-b">Plan</th>}
                 <th className="px-4 py-2 border-b">Status</th>
+                <th className="px-4 py-2 border-b">Network</th>
+                <th className="px-4 py-2 border-b">Data Type</th>
                 <th className="px-4 py-2 border-b">Reference ID</th>
                 <th className="px-4 py-2 border-b">User</th>
                 <th className="px-4 py-2 border-b">Type</th>
@@ -127,6 +129,8 @@ const TransactionsSection = ({
                     >
                       {transaction.status}
                     </td>
+                    <td className="px-4 py-2 border-b text-center">{transaction.network}</td>
+                    <td className="px-4 py-2 border-b text-center">{transaction.data_type}</td>
                     <td className="px-4 py-2 border-b">
                       {transaction.reference || transaction.reference_id}
                     </td>

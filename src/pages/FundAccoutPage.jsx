@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'boxicons/css/boxicons.min.css';
 import { Link } from 'react-router-dom';
 import { createAuthAxios } from '@/api/authAxios';
+import { toast } from 'react-toastify';
 
 const FundAccountPage = () => {
   const authAxios = createAuthAxios();
@@ -90,6 +91,7 @@ const FundAccountPage = () => {
                         <p className='font-semibold'>{account.accountReference}</p>
                       </div>
                     </div>
+                    <p className='p-0 text-xs text-gray -mb-4 mt-2 text-center'>*Tap on the account card to view</p>
                   </div>
                 ))}
               </div>
@@ -153,9 +155,18 @@ const FundAccountPage = () => {
               <p><strong>Tracking ID:</strong> {selectedAccount.accountReference}</p>
               <p><strong>Bank Code:</strong> {selectedAccount.bankCode}</p>
             </div>
-            <button onClick={closeModal} className='mt-4 w-full bg-vibrantGreen text-white py-2 rounded-lg'>
+            <button
+                onClick={() => {
+                  navigator.clipboard.writeText(selectedAccount.accountNumber);
+                  toast.success('Account number copied to clipboard');
+                }}
+                className='mt-4 w-full bg-blue-400 text-white py-2 rounded-lg'
+              >
+                Copy Account Number
+              </button>
+            {/* <button onClick={closeModal} className='mt-4 w-full bg-vibrantGreen text-white py-2 rounded-lg'>
               Close
-            </button>
+            </button> */}
           </div>
         </div>
       )}

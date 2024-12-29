@@ -54,6 +54,8 @@ const TransactionsPurchase = () => {
             <th className="px-4 py-2 border-b">Date Created</th>
             {showPlan && <th className="px-4 py-2 border-b">Plan</th>}
             <th className="px-4 py-2 border-b">Status</th>
+            <th className="px-4 py-2 border-b">Network</th>
+            <th className="px-4 py-2 border-b">Data Type</th>
             <th className="px-4 py-2 border-b">Reference ID</th>
             <th className="px-4 py-2 border-b">Phone Number</th>
             <th className="px-4 py-2 border-b">Balance Before</th>
@@ -71,6 +73,8 @@ const TransactionsPurchase = () => {
               <td className={`px-4 py-2 border-b font-bold text-center ${getStatusClass(transaction.status)}`}>
                 {transaction.status}
               </td>
+              <td className="px-4 py-2 border-b text-center">{transaction.network}</td>
+              <td className="px-4 py-2 border-b text-center">{transaction.data_type}</td>
               <td className="px-4 py-2 border-b text-center">{transaction.reference}</td>
               <td className="px-4 py-2 border-b text-center">{transaction.mobile_number}</td>
               <td className="px-4 py-2 border-b text-center">{transaction.balance_before}</td>
