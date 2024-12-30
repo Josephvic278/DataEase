@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { DashboardContext } from '@/context/DashboardContext';
 import { createAuthAxios } from '@/api/authAxios';
 import TransactionsSection from './TransactionsSection';
+import { format, isToday, isThisMonth } from 'date-fns';
 
 const AdminPage = () => {
   const authAxios = createAuthAxios()
@@ -18,8 +19,10 @@ const AdminPage = () => {
   const { user, loading } = useContext(DashboardContext);
   const [searchTerm1, setSearchTerm1] = useState(""); // Track the search input
   const [info, setInfo] = useState('');
+  const [allTransactions, setAllTransactions] = useState([]);
   const [totalCredited, setTotalCredited] = useState(0);
   const [totalDebited, setTotalDebited] = useState(0);
+  const [filter, setFilter] = useState('all');
 
 
   const [expandedSection, setExpandedSection] = useState(null); // Track which section is open
@@ -231,26 +234,43 @@ const AdminPage = () => {
     }
   };
 
+  const calculateTotals = (transactions, filter) => {
+    const filteredTransactions = transactions.filter(transaction => {
+      if (filter === 'today') {
+        return isToday(new Date(transaction.date_created));
+      } else if (filter === 'month') {
+        return isThisMonth(new Date(transaction.date_created));
+      }
+      return true; // 'all' filter
+    });
+
+    const successfulTransactions = filteredTransactions.filter(transaction => transaction.status === 'Success');
+    const credited = successfulTransactions
+      .filter(transaction => transaction.credit_type === 'credit')
+      .reduce((sum, transaction) => sum + transaction.amount, 0);
+    const debited = successfulTransactions
+      .filter(transaction => transaction.credit_type === 'debit')
+      .reduce((sum, transaction) => sum + transaction.amount, 0);
+
+    setTotalCredited(credited);
+    setTotalDebited(debited);
+  };
+
   useEffect(() => {
     authAxios.post('/payments/', {'table':'all'})
       .then((res) => {
-        const allTransactions = JSON.parse(res.data.message);
-        const successfulTransactions = allTransactions.filter(transaction => transaction.status === 'Success');
-        // console.log(res.data.message)
-        const credited = successfulTransactions
-          .filter(transaction => transaction.credit_type === 'credit')
-          .reduce((sum, transaction) => sum + transaction.amount, 0);
-        const debited = successfulTransactions
-          .filter(transaction => transaction.credit_type === 'debit')
-          .reduce((sum, transaction) => sum + transaction.amount, 0);
-
-        setTotalCredited(credited);
-        setTotalDebited(debited);
+        const transactions = JSON.parse(res.data.message);
+        setAllTransactions(transactions);
+        calculateTotals(transactions, filter);
       })
       .catch((err) => {
         console.error(err);
       });
   }, []);
+
+  useEffect(() => {
+    calculateTotals(allTransactions, filter);
+  }, [filter, allTransactions]);
 
   return (
     <div className="min-h-screen bg-gray-100 p-5">
@@ -443,8 +463,18 @@ const AdminPage = () => {
           </div>
         </div>
       )}
-
-    <div className="mt-8 flex justify-between">
+          <div className="w-full flex justify-end mt-2">
+          <select
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            className="p-2 border border-gray-300 rounded-lg"
+          >
+            <option value="all">All Time</option>
+            <option value="month">This Month</option>
+            <option value="today">Today</option>
+          </select>
+        </div>
+    <div className="mt-2 flex justify-between">
         <div className="p-4 bg-white rounded-lg shadow-md border border-gray-300 w-1/2 mr-2">
           <h3 className="text-lg font-semibold text-gray-800">Total Credited</h3>
           <div className="flex items-center mt-2">
