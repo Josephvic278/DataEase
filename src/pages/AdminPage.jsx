@@ -80,7 +80,7 @@ const AdminPage = () => {
     
           if (!userId) {
             Swal.showValidationMessage('Please enter a valid User ID');
-          } else if (!amount || amount <= 0) {
+          } else if (!amount) {
             Swal.showValidationMessage('Please enter a valid amount greater than 0');
           } else if (amount > 5000) {
             Swal.showValidationMessage('The maximum amount you can fund is 5000');
