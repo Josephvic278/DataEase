@@ -80,7 +80,7 @@ const AdminPage = () => {
     
           if (!userId) {
             Swal.showValidationMessage('Please enter a valid User ID');
-          } else if (!amount || amount <= 0) {
+          } else if (!amount) {
             Swal.showValidationMessage('Please enter a valid amount greater than 0');
           } else if (amount > 5000) {
             Swal.showValidationMessage('The maximum amount you can fund is 5000');
@@ -300,6 +300,9 @@ const AdminPage = () => {
           <div>
             <h2 className="text-xl font-semibold text-gray-800 mb-4">User Management</h2>
             {/* Search Bar */}
+            <div className='mb-4'>
+              <p className='p-4'>Total Users: {userDetails.length}</p>
+            </div>
             <input
               type="text"
               placeholder="Search by username..."

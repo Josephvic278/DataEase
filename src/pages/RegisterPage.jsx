@@ -256,7 +256,7 @@ const RegisterPage = () => {
 		            </div>
 
                 <div className="grid gap-2">
-                    <Label htmlFor="referral" className="small-1 text-gray font-semibold text-[16px]">Referral Code</Label>
+                    <Label htmlFor="referral" className="small-1 text-gray font-semibold text-[16px]">Referral Code (optional)</Label>
                     <input
                       id="referral"
                       type="text"
@@ -336,7 +336,7 @@ const RegisterPage = () => {
                     {verifying ? 'Verifying...' : 'Verify OTP'}
                   </button>
                   <div>
-                  <p className='text-sm'>Having issues with email verification? <a href={manual_uri} className='font-bold'>click here</a> to veify manually</p>
+                  <p className='text-sm'>Having issues with email verification? check your spam or <a href={manual_uri} className='font-bold'>click here</a> to veify manually</p>
                 </div>
                   {/* Countdown and Resend OTP Button */}
                   <div className="mt-4 flex justify-between items-center">
