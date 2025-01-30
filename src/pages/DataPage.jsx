@@ -170,6 +170,7 @@ const DataPage = () => {
   const [loading1, setLoading1] = useState(false);
   const [isModalOpen1, setIsModalOpen1] = useState(false);
   const [pin1, setPin1] = useState('');
+  const [isPortedNumber, setIsPortedNumber] = useState(false);
   // const [loading, setLoading] = useState(false);
   const [dataTypes1, setDataTypes1] = useState([]);
   const [dataPlans1, setDataPlans1] = useState([]);
@@ -269,7 +270,8 @@ const DataPage = () => {
       plan_id: selectedPlan1.plan_id,
       action: 'purchase',
       data_type: dataType1,
-      plan: selectedPlan1
+      plan: selectedPlan1,
+      ported_number: isPortedNumber // Add ported_number argument
     };
 
     authAxios.post('/data/', requestBody)
@@ -591,7 +593,16 @@ const DataPage = () => {
             className="w-full border rounded-lg px-3 h-14 py-2 outline-none"
           />
         </div>
-
+        
+        <div className='flex mb-4'>
+          <p>Ported number</p>
+          <input 
+            type="checkbox" 
+            className='ml-2'
+            checked={isPortedNumber}
+            onChange={(e) => setIsPortedNumber(e.target.checked)}
+          />
+        </div>
         <button
           onClick={handlePay1}
           className="w-full bg-green-500 text-white font-semibold py-3 rounded-lg hover:bg-green-600 transition-colors"
