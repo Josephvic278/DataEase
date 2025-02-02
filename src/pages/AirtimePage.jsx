@@ -20,6 +20,7 @@ const AirtimePage = () => {
   const [pin, setPin] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bypassValidator, setBypassValidator] = useState(false); // State for bypass validator
+  const [isPortedNumber, setIsPortedNumber] = useState(false); // State for ported number
 
   const networks = [
     { id: '1', name: 'mtn', logo: mtnLogo },
@@ -44,6 +45,7 @@ const AirtimePage = () => {
       number: phoneNumber,
       amount: amount,
       bypass_validator: bypassValidator,
+      ported_number: isPortedNumber // Add ported_number argument
     };
 
     authAxios.post('/airtime/', requestBody)
@@ -173,19 +175,19 @@ const AirtimePage = () => {
         />
       </div>
 
-      {/* Bypass Number Validator Checkbox */}
-      {/* <div className="flex items-center mb-4">
+      {/* Ported Number Checkbox */}
+      <div className="flex items-center mb-4">
         <input
           type="checkbox"
-          id="bypassValidator"
-          checked={bypassValidator}
-          onChange={(e) => setBypassValidator(e.target.checked)}
+          id="portedNumber"
+          checked={isPortedNumber}
+          onChange={(e) => setIsPortedNumber(e.target.checked)}
           className="mr-2"
         />
-        <label htmlFor="bypassValidator" className="text-gray-700">
-          Bypass Number Validator
+        <label htmlFor="portedNumber" className="text-gray-700">
+          Ported Number
         </label>
-      </div> */}
+      </div>
 
       <button
         onClick={handlePurchase}
