@@ -194,6 +194,17 @@ const DataPage = () => {
     { id: '3', name: '9MOBILE', logo: mobile },
     { id: '4', name: 'GLO', logo: Glo },
   ];
+
+  // Configuration for available data types per network
+  const networkDataTypesConfig = {
+    //mtn 'DATA COUPONS', 'GIFTING', 'SME', 'SME 2', 'DATA SHARE', 'AWOOF'
+    // airtel 'DATA COUPONS', 'GIFTING', 'SME', 'DATA SHARE',
+    MTN: ['GIFTING', ],
+    AIRTEL: ['CORPORATE GIFTING',],
+    '9MOBILE': [ 'CORPORATE GIFTING',],
+    GLO: ['CORPORATE GIFTING',]
+  };
+
   if (data_vendor === 'subsizi') {
     useEffect(() => {
       if (selectedNetwork1) {
@@ -370,13 +381,7 @@ const DataPage = () => {
           >
             <option value="" disabled>Select a data type</option>
             {dataTypes
-              .filter((type) => {
-                // Only show CORPORATE GIFTING for non-MTN networks
-                if (selectedNetwork?.name !== 'MTN' && type !== 'CORPORATE GIFTING') {
-                  return false;
-                }
-                return true;
-              })
+              .filter((type) => networkDataTypesConfig[selectedNetwork?.name]?.includes(type))
               .map((type) => (
                 <option key={type} value={type}>
                   {type}
@@ -539,13 +544,7 @@ const DataPage = () => {
           >
             <option value="" disabled>Select a data type</option>
             {dataTypes1
-              .filter((type) => {
-                // Only show CORPORATE GIFTING for non-MTN networks
-                if (selectedNetwork1?.name !== 'MTN' && type !== 'CORPORATE GIFTING') {
-                  return false;
-                }
-                return true;
-              })
+              .filter((type) => networkDataTypesConfig[selectedNetwork1?.name]?.includes(type))
               .map((type) => (
                 <option key={type} value={type}>
                   {type}
