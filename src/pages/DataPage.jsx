@@ -150,8 +150,8 @@ const DataPage = () => {
     setAmount(parseFloat(plan.plan_amount) + additionalCost);
     setMonthValidate(plan.month_validate);
   };
-  // const data_vendor = 'subsizi'
-  const data_vendor = 'mypayconnect'
+  const data_vendor = 'subsizi'
+  // const data_vendor = 'mypayconnect'
 
     // Utility function to extract plan size
   const getPlanSize = (plan) => {
@@ -199,8 +199,8 @@ const DataPage = () => {
   const networkDataTypesConfig = {
     //mtn 'DATA COUPONS', 'GIFTING', 'SME', 'SME 2', 'DATA SHARE', 'AWOOF'
     // airtel 'DATA COUPONS', 'GIFTING', 'SME', 'DATA SHARE',
-    MTN: ['GIFTING' ],
-    AIRTEL: ['CORPORATE GIFTING',],
+    MTN: ['GIFTING', 'SME' ],
+    AIRTEL: ['CORPORATE GIFTING','AWOOF'],
     '9MOBILE': [ 'CORPORATE GIFTING',],
     GLO: ['CORPORATE GIFTING',]
   };
