@@ -5,8 +5,8 @@ import { AuthContext } from '../context/AuthContext';
 
 // Create an instance of axios with default settings
 const authAxios = axios.create({
-  // baseURL: 'http://127.0.0.1:8000/',
-  baseURL: 'https://vtu-h5yu.onrender.com/',
+  baseURL: 'http://127.0.0.1:8000/',
+  // baseURL: 'https://vtu-h5yu.onrender.com/',
   headers: {
     'Content-Type': 'application/json',
   },
