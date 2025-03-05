@@ -150,8 +150,8 @@ const DataPage = () => {
     setAmount(parseFloat(plan.plan_amount) + additionalCost);
     setMonthValidate(plan.month_validate);
   };
-  const data_vendor = 'subsizi'
-  // const data_vendor = 'mypayconnect'
+  // const data_vendor = 'subsizi'
+  const data_vendor = 'mypayconnect'
 
     // Utility function to extract plan size
   const getPlanSize = (plan) => {
@@ -194,17 +194,6 @@ const DataPage = () => {
     { id: '3', name: '9MOBILE', logo: mobile },
     { id: '4', name: 'GLO', logo: Glo },
   ];
-
-  // Configuration for available data types per network
-  const networkDataTypesConfig = {
-    //mtn 'DATA COUPONS', 'GIFTING', 'SME', 'SME 2', 'DATA SHARE', 'AWOOF'
-    // airtel 'DATA COUPONS', 'GIFTING', 'SME', 'DATA SHARE',
-    MTN: ['GIFTING', 'SME' ],
-    AIRTEL: ['CORPORATE GIFTING','AWOOF'],
-    '9MOBILE': [ 'CORPORATE GIFTING',],
-    GLO: ['CORPORATE GIFTING',]
-  };
-
   if (data_vendor === 'subsizi') {
     useEffect(() => {
       if (selectedNetwork1) {
@@ -381,7 +370,13 @@ const DataPage = () => {
           >
             <option value="" disabled>Select a data type</option>
             {dataTypes
-              .filter((type) => networkDataTypesConfig[selectedNetwork?.name]?.includes(type))
+              .filter((type) => {
+                // Only show CORPORATE GIFTING for non-MTN networks
+                if (selectedNetwork?.name !== 'MTN' && type !== 'CORPORATE GIFTING') {
+                  return false;
+                }
+                return true;
+              })
               .map((type) => (
                 <option key={type} value={type}>
                   {type}
@@ -544,7 +539,13 @@ const DataPage = () => {
           >
             <option value="" disabled>Select a data type</option>
             {dataTypes1
-              .filter((type) => networkDataTypesConfig[selectedNetwork1?.name]?.includes(type))
+              .filter((type) => {
+                // Only show CORPORATE GIFTING for non-MTN networks
+                if (selectedNetwork1?.name !== 'MTN' && type !== 'CORPORATE GIFTING') {
+                  return false;
+                }
+                return true;
+              })
               .map((type) => (
                 <option key={type} value={type}>
                   {type}
