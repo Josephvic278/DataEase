@@ -268,7 +268,7 @@ const DataPage = () => {
   const networkDataTypesConfig = {
     //mtn 'DATA COUPONS', 'GIFTING', 'SME', 'SME 2', 'DATA SHARE', 'AWOOF'
     // airtel 'DATA COUPONS', 'GIFTING', 'SME', 'DATA SHARE',
-    MTN: ['GIFTING', 'SME', 'CORPORATE GIFTING','DATA SHARE', 'AWOOF'],
+    MTN: ['GIFTING', 'SME','DATA SHARE', 'AWOOF'],
     AIRTEL: ['CORPORATE GIFTING','AWOOF'],
     '9MOBILE': [ 'CORPORATE GIFTING',],
     GLO: ['CORPORATE GIFTING','GIFTING',]
