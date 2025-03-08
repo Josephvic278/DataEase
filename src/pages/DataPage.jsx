@@ -180,8 +180,24 @@ const DataPage = () => {
     // Extract the plan size in GB
     const planSizeInGB = extractPlanSizeInGB(plan.plan_name);
   
-    // Determine additional cost
-    const additionalCost = planSizeInGB >= 5 ? 30 : 8;
+    // Determine additional cost based on network
+    let additionalCost;
+    switch (selectedNetwork1.name) {
+      case 'MTN':
+        additionalCost = planSizeInGB >= 2 ? 10 : 8;
+        break;
+      case 'AIRTEL':
+        additionalCost = planSizeInGB >= 10 ? 40 : 8;
+        break;
+      case '9MOBILE':
+        additionalCost = planSizeInGB >= 2 ? 30 : 8;
+        break;
+      case 'GLO':
+        additionalCost = planSizeInGB >= 2 ? 30 : 8;
+        break;
+      default:
+        additionalCost = 8; // Default additional cost
+    }
   
     // Update amount and month validation
     setAmount1(parseFloat(plan.plan_amount) + additionalCost);
@@ -194,6 +210,17 @@ const DataPage = () => {
     { id: '3', name: '9MOBILE', logo: mobile },
     { id: '4', name: 'GLO', logo: Glo },
   ];
+
+  // Configuration for available data types per network
+  const networkDataTypesConfig = {
+    //mtn 'DATA COUPONS', 'GIFTING', 'SME', 'SME 2', 'DATA SHARE', 'AWOOF'
+    // airtel 'DATA COUPONS', 'GIFTING', 'SME', 'DATA SHARE',
+    MTN: ['GIFTING' ],
+    AIRTEL: ['CORPORATE GIFTING',],
+    '9MOBILE': [ 'CORPORATE GIFTING',],
+    GLO: ['CORPORATE GIFTING',]
+  };
+
   if (data_vendor === 'subsizi') {
     useEffect(() => {
       if (selectedNetwork1) {
