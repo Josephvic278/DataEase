@@ -239,13 +239,13 @@ const DataPage = () => {
         } else if (planSizeInGB < 1) {
           additionalCost = 8;
         } else if (planSizeInGB < 2) {
-          additionalCost = 8;
+          additionalCost = 10;
         } else if (planSizeInGB < 5) {
           additionalCost = 10;
         } else if (planSizeInGB < 10) {
-          additionalCost = 25;
+          additionalCost = 30;
         } else {
-          additionalCost = 50;
+          additionalCost = 30;
         }
         break;
       default:
@@ -268,7 +268,7 @@ const DataPage = () => {
   const networkDataTypesConfig = {
     //mtn 'DATA COUPONS', 'GIFTING', 'SME', 'SME 2', 'DATA SHARE', 'AWOOF'
     // airtel 'DATA COUPONS', 'GIFTING', 'SME', 'DATA SHARE',
-    MTN: ['GIFTING', 'SME','DATA SHARE', 'AWOOF'],
+    MTN: ['GIFTING', 'SME', 'CORPORATE GIFTING','DATA SHARE', 'AWOOF'],
     AIRTEL: ['CORPORATE GIFTING','AWOOF'],
     '9MOBILE': [ 'CORPORATE GIFTING',],
     GLO: ['CORPORATE GIFTING','GIFTING',]
