@@ -268,7 +268,7 @@ const DataPage = () => {
   const availableDataSizes = {
     MTN: {
       GIFTING: [ '1.0GB', '5.0GB',],
-      SME: ['500MB', '1GB', '2GB', '5GB', '*'],
+      SME: ['500MB', '1.0GB', '2.0GB', '3.0GB',],
       AWOOF: ['1.5GB', '5.0GB',]
     },
     AIRTEL: {
@@ -288,8 +288,8 @@ const DataPage = () => {
   const networkDataTypesConfig = {
     //mtn 'DATA COUPONS', 'GIFTING', 'SME', 'SME 2', 'DATA SHARE', 'AWOOF'
     // airtel 'DATA COUPONS', 'GIFTING', 'SME', 'DATA SHARE',
-    MTN: ['GIFTING', 'SME' ],
-    AIRTEL: ['AWOOF'],
+    MTN: ['GIFTING', 'SME', 'AWOOF' ],
+    AIRTEL: ['AWOOF', 'CORPORATE GIFTING',],
     '9MOBILE': [ 'CORPORATE GIFTING',],
     GLO: ['CORPORATE GIFTING','GIFTING',]
   };
