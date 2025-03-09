@@ -289,7 +289,7 @@ const DataPage = () => {
     //mtn 'DATA COUPONS', 'GIFTING', 'SME', 'SME 2', 'DATA SHARE', 'AWOOF'
     // airtel 'DATA COUPONS', 'GIFTING', 'SME', 'DATA SHARE',
     MTN: ['GIFTING', 'SME' ],
-    AIRTEL: ['CORPORATE GIFTING','AWOOF'],
+    AIRTEL: ['AWOOF'],
     '9MOBILE': [ 'CORPORATE GIFTING',],
     GLO: ['CORPORATE GIFTING','GIFTING',]
   };
