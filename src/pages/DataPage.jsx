@@ -150,8 +150,8 @@ const DataPage = () => {
     setAmount(parseFloat(plan.plan_amount) + additionalCost);
     setMonthValidate(plan.month_validate);
   };
-  // const data_vendor = 'subsizi'
-  const data_vendor = 'mypayconnect'
+  const data_vendor = 'subsizi'
+  // const data_vendor = 'mypayconnect'
 
     // Utility function to extract plan size
   const getPlanSize = (plan) => {
@@ -180,20 +180,73 @@ const DataPage = () => {
     // Extract the plan size in GB
     const planSizeInGB = extractPlanSizeInGB(plan.plan_name);
   
-    // Determine additional cost based on network
+    // Determine additional cost based on network and plan size
     let additionalCost;
     switch (selectedNetwork1.name) {
       case 'MTN':
-        additionalCost = planSizeInGB >= 2 ? 10 : 8;
+        if (planSizeInGB < 0.5) {
+          additionalCost = 5;
+        } else if (planSizeInGB < 1) {
+          additionalCost = 8;
+        } else if (planSizeInGB < 2) {
+          additionalCost = 8;
+        } else if (planSizeInGB < 3) {
+          additionalCost = 10;
+        } else if (planSizeInGB < 5) {
+          additionalCost = 10;
+        } else if (planSizeInGB < 6) {
+          additionalCost = 30;
+        }
+        else if (planSizeInGB < 10) {
+          additionalCost = 25;
+        } else {
+          additionalCost = 30;
+        }
         break;
       case 'AIRTEL':
-        additionalCost = planSizeInGB >= 10 ? 40 : 8;
+        if (planSizeInGB < 0.5) {
+          additionalCost = 8;
+        } else if (planSizeInGB < 1) {
+          additionalCost = 9;
+        } else if (planSizeInGB < 2) {
+          additionalCost = 8;
+        } else if (planSizeInGB < 5) {
+          additionalCost = 10;
+        } else if (planSizeInGB < 10) {
+          additionalCost = 30;
+        } else {
+          additionalCost = 40;
+        }
         break;
       case '9MOBILE':
-        additionalCost = planSizeInGB >= 2 ? 30 : 8;
+        if (planSizeInGB < 0.5) {
+          additionalCost = 7;
+        } else if (planSizeInGB < 1) {
+          additionalCost = 10;
+        } else if (planSizeInGB < 2) {
+          additionalCost = 15;
+        } else if (planSizeInGB < 5) {
+          additionalCost = 20;
+        } else if (planSizeInGB < 10) {
+          additionalCost = 30;
+        } else {
+          additionalCost = 35;
+        }
         break;
       case 'GLO':
-        additionalCost = planSizeInGB >= 2 ? 30 : 8;
+        if (planSizeInGB < 0.5) {
+          additionalCost = 8;
+        } else if (planSizeInGB < 1) {
+          additionalCost = 8;
+        } else if (planSizeInGB < 2) {
+          additionalCost = 10;
+        } else if (planSizeInGB < 5) {
+          additionalCost = 10;
+        } else if (planSizeInGB < 10) {
+          additionalCost = 30;
+        } else {
+          additionalCost = 30;
+        }
         break;
       default:
         additionalCost = 8; // Default additional cost
@@ -211,12 +264,32 @@ const DataPage = () => {
     { id: '4', name: 'GLO', logo: Glo },
   ];
 
+  // List of available data sizes for each network and data type
+  const availableDataSizes = {
+    MTN: {
+      GIFTING: [ '1.0GB', '5.0GB',],
+      SME: ['500MB', '1GB', '2GB', '5GB', '*'],
+      AWOOF: ['1.5GB', '5.0GB',]
+    },
+    AIRTEL: {
+      CORPORATE_GIFTING: ['100.0MB', '300.0MB','500.0MB', '1.0GB', '2.0GB', '5.0GB', '10.0GB', '*'],
+      AWOOF: ['1.5GB', '150.0MB', '300.0MB', '500.0MB', '3.0GB', '5.0GB', '10.0GB',]
+    },
+    '9MOBILE': {
+      CORPORATE_GIFTING: ['500MB', '1GB', '2GB', '5GB', '10GB', '*']
+    },
+    GLO: {
+      CORPORATE_GIFTING: ['500MB', '1GB', '2GB', '5GB', '10GB', '*'],
+      GIFTING: ['500MB', '1GB', '2GB', '5GB', '10GB', '*']
+    }
+  };
+
   // Configuration for available data types per network
   const networkDataTypesConfig = {
     //mtn 'DATA COUPONS', 'GIFTING', 'SME', 'SME 2', 'DATA SHARE', 'AWOOF'
     // airtel 'DATA COUPONS', 'GIFTING', 'SME', 'DATA SHARE',
-    MTN: ['GIFTING' ],
-    AIRTEL: ['CORPORATE GIFTING',],
+    MTN: ['GIFTING', 'SME', 'AWOOF'],
+    AIRTEL: ['AWOOF'],
     '9MOBILE': [ 'CORPORATE GIFTING',],
     GLO: ['CORPORATE GIFTING',]
   };
@@ -397,13 +470,7 @@ const DataPage = () => {
           >
             <option value="" disabled>Select a data type</option>
             {dataTypes
-              .filter((type) => {
-                // Only show CORPORATE GIFTING for non-MTN networks
-                if (selectedNetwork?.name !== 'MTN' && type !== 'CORPORATE GIFTING') {
-                  return false;
-                }
-                return true;
-              })
+              .filter((type) => networkDataTypesConfig[selectedNetwork?.name]?.includes(type))
               .map((type) => (
                 <option key={type} value={type}>
                   {type}
@@ -424,11 +491,13 @@ const DataPage = () => {
             disabled={isLoading} // Disable dropdown during loading
           >
             <option value="" disabled>Select a plan</option>
-            {dataPlans.map((plan) =>  (
-              <option key={plan.dataplan_id} value={plan.dataplan_id}>
-              {getPlanSize(plan.plan)} {/* Display only the plan size */}
-            </option>
-            ))}
+            {dataPlans
+              .filter((plan) => availableDataSizes[selectedNetwork?.name]?.[dataType]?.includes(getPlanSize(plan.plan)) || availableDataSizes[selectedNetwork?.name]?.[dataType]?.includes('*')) // Filter plans based on available data sizes
+              .map((plan) => (
+                <option key={plan.dataplan_id} value={plan.dataplan_id}>
+                  {getPlanSize(plan.plan)} {/* Display only the plan size */}
+                </option>
+              ))}
           </select>
         </div>
 
@@ -566,13 +635,7 @@ const DataPage = () => {
           >
             <option value="" disabled>Select a data type</option>
             {dataTypes1
-              .filter((type) => {
-                // Only show CORPORATE GIFTING for non-MTN networks
-                if (selectedNetwork1?.name !== 'MTN' && type !== 'CORPORATE GIFTING') {
-                  return false;
-                }
-                return true;
-              })
+              .filter((type) => networkDataTypesConfig[selectedNetwork1?.name]?.includes(type))
               .map((type) => (
                 <option key={type} value={type}>
                   {type}
@@ -593,11 +656,13 @@ const DataPage = () => {
             disabled={isLoading} // Disable dropdown during loading
           >
             <option value="" disabled>Select a plan</option>
-            {dataPlans1.map((plan) =>  (
-              <option key={plan.plan_id} value={plan.plan_id}>
-              {plan.plan_name} {/* Display only the plan size */}
-            </option>
-            ))}
+            {dataPlans1
+              .filter((plan) => availableDataSizes[selectedNetwork1?.name]?.[dataType1]?.includes(getPlanSize(plan.plan_name)) || availableDataSizes[selectedNetwork1?.name]?.[dataType1]?.includes('*')) // Filter plans based on available data sizes
+              .map((plan) => (
+                <option key={plan.plan_id} value={plan.plan_id}>
+                  {plan.plan_name} {/* Display only the plan size */}
+                </option>
+              ))}
           </select>
         </div>
 
