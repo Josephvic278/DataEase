@@ -269,26 +269,30 @@ const DataPage = () => {
     MTN: {
       GIFTING: [ '1.0GB', '5.0GB',],
       SME: ['500MB', '1.0GB', '2.0GB', '3.0GB',],
-      AWOOF: ['1.5GB', '5.0GB',]
+      AWOOF: ['1.5GB', '5.0GB',],
+      'DATA SHARE': ['*']
     },
     AIRTEL: {
-      CORPORATE_GIFTING: ['100.0MB', '300.0MB','500.0MB', '1.0GB', '2.0GB', '5.0GB', '10.0GB', '*'],
+      'CORPORATE GIFTING': ['100.0MB', '300.0MB','500.0MB', '1.0GB', '2.0GB', '5.0GB',
+      ],
       AWOOF: ['1.5GB', '150.0MB', '300.0MB', '500.0MB', '3.0GB', '5.0GB', '10.0GB',]
     },
     '9MOBILE': {
       CORPORATE_GIFTING: ['500MB', '1GB', '2GB', '5GB', '10GB', '*']
     },
     GLO: {
-      CORPORATE_GIFTING: ['500MB', '1GB', '2GB', '5GB', '10GB', '*'],
+      'CORPORATE GIFTING': ['500.0MB', '1.0GB', '2.0GB', '5.0GB', '10.0GB'],
       GIFTING: ['500MB', '1GB', '2GB', '5GB', '10GB', '*']
     }
   };
+
+  const normalizeKey = (key) => key.replace(/\s+/g, '_').toUpperCase();
 
   // Configuration for available data types per network
   const networkDataTypesConfig = {
     //mtn 'DATA COUPONS', 'GIFTING', 'SME', 'SME 2', 'DATA SHARE', 'AWOOF'
     // airtel 'DATA COUPONS', 'GIFTING', 'SME', 'DATA SHARE',
-    MTN: ['GIFTING', 'SME', 'AWOOF' ],
+    MTN: ['GIFTING', 'SME', 'AWOOF', 'DATA SHARE'],
     AIRTEL: ['AWOOF', 'CORPORATE GIFTING',],
     '9MOBILE': [ 'CORPORATE GIFTING',],
     GLO: ['CORPORATE GIFTING','GIFTING',]

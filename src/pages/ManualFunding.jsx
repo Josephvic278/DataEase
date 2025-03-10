@@ -63,7 +63,7 @@ const ManualFunding = () => {
       <form onSubmit={handleSubmit} className="space-y-4">
 
         {/* Amount Input */}
-        <div>
+        {/* <div>
           <label className="block text-gray-700 font-medium mb-2">Amount</label>
           <input
             type="number"
@@ -73,18 +73,18 @@ const ManualFunding = () => {
             className="w-full lg:w-[70%] p-2 border rounded-md shadow-sm"
             placeholder="Enter amount"
           />
-        </div>
+        </div> */}
 
         {/* Image Upload */}
-        <div>
-          <label className="block text-gray-700 font-medium mb-2">Upload Image</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="w-full lg:w-[70%] p-2 border rounded-md shadow-sm"
-          />
-        </div>
+          {/* <div>
+            <label className="block text-gray-700 font-medium mb-2">Upload Image</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="w-full lg:w-[70%] p-2 border rounded-md shadow-sm"
+            />
+          </div> */}
         <div className="mt-2">
         <p><b>Account Number:</b> 6104930954</p>
         <p><b>Account Name:</b> Ifeanyi Emmanuel Chukwu</p>
@@ -98,13 +98,9 @@ const ManualFunding = () => {
         <p className='text-center text-sm text-gray'>*Enter an amount and upload a screenshot of your receipt.</p>
         {/* Submit Button */}
         <div>
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full h-14 bg-vibrantGreen text-white p-2 rounded-md hover:bg-green-600 transition duration-200 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-          >
+          <a href="https://wa.me/+2349164661632?text=Hi%20Dataease!!!" className="w-full h-14 bg-vibrantGreen text-white p-2 rounded-md hover:bg-green-600 transition hover:text-white duration-200 flex items-center justify-center">
             {loading ? 'Submitting...' : 'Submit'}
-          </button>
+          </a>
         </div>
       </form>
     </div>
