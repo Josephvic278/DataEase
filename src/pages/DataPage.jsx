@@ -295,7 +295,7 @@ const DataPage = () => {
     MTN: ['GIFTING', 'SME', 'AWOOF', 'DATA SHARE'],
     AIRTEL: ['AWOOF', 'CORPORATE GIFTING',],
     '9MOBILE': [ 'CORPORATE GIFTING',],
-    GLO: ['CORPORATE GIFTING','GIFTING',]
+    GLO: ['CORPORATE GIFTING',]
   };
 
   if (data_vendor === 'subsizi') {
