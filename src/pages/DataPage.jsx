@@ -275,7 +275,8 @@ const DataPage = () => {
     AIRTEL: {
       'CORPORATE GIFTING': ['100.0MB', '300.0MB','500.0MB', '1.0GB', '2.0GB', '5.0GB', '10.0GB',
       ],
-      AWOOF: ['1.5GB', '150.0MB', '300.0MB', '500.0MB', '3.0GB', '5.0GB', '10.0GB',]
+      // '150.0MB', '300.0MB', '500.0MB', '3.0GB', '5.0GB', '10.0GB',
+      AWOOF: [ '2.5GB',]
     },
     '9MOBILE': {
       CORPORATE_GIFTING: ['500MB', '1GB', '2GB', '5GB', '10GB', '*']
