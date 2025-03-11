@@ -273,7 +273,7 @@ const DataPage = () => {
       'DATA SHARE': ['*']
     },
     AIRTEL: {
-      'CORPORATE GIFTING': ['100.0MB', '300.0MB','500.0MB', '1.0GB', '2.0GB', '5.0GB',
+      'CORPORATE GIFTING': ['100.0MB', '300.0MB','500.0MB', '1.0GB', '2.0GB', '5.0GB', '10.0GB',
       ],
       AWOOF: ['1.5GB', '150.0MB', '300.0MB', '500.0MB', '3.0GB', '5.0GB', '10.0GB',]
     },
