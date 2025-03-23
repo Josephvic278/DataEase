@@ -82,7 +82,7 @@ const MonnifyFundingPage = () => {
             </svg>
           ) : 'Proceed'}
         </button>
-        <p className='mt-2'>Fee: <b>1.2%  </b></p>
+        <p className='mt-2'>Fee: <b>1.5%  </b></p>
         <p className='text-xs mt-2 text-gray text-center'>
         *Funding delays may occur. Refresh your dashboard after using Monnify.</p>
       </div>

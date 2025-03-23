@@ -318,8 +318,8 @@ const DataPage = () => {
     setMonthValidate(plan.month_validate);
   };
 
-  // const data_vendor = 'subsizi'
-  const data_vendor = 'mypayconnect'
+  const data_vendor = 'subsizi'
+  // const data_vendor = 'mypayconnect'
 
     // Utility function to extract plan size
   const getPlanSize = (plan) => {
@@ -434,7 +434,7 @@ const DataPage = () => {
     { id: '1', name: 'MTN', logo: Mtn },
     { id: '2', name: 'AIRTEL', logo: Airtel },
     { id: '3', name: '9MOBILE', logo: mobile },
-    { id: '4', name: 'GLO', logo: Glo },
+    { id: '4', name: 'GLO', logo: Glo }
   ];
 
   // List of available data sizes for each network and data type
@@ -449,7 +449,7 @@ const DataPage = () => {
       'CORPORATE GIFTING': ['100.0MB', '300.0MB','500.0MB', '1.0GB', '2.0GB', '5.0GB', '10.0GB', '15.0GB', '20.0GB'
       ],
       // '150.0MB', '300.0MB', '500.0MB', '3.0GB', '5.0GB', '10.0GB',
-      SME: [ '150.0MB', '300.0MB', '600.0MB', '3.0GB', '7.0GB', '10.0GB']
+      SME: [ '150.0MB', '300.0MB', '600.0MB', '3.0GB', '7.0GB', '10.0GB'],
     },
     '9MOBILE': {
       CORPORATE_GIFTING: ['500MB', '1GB', '2GB', '5GB', '10GB', '*']
@@ -461,7 +461,7 @@ const DataPage = () => {
   };
   const availableDataSizes = {
     MTN: {
-      GIFTING: [ '1.0GB', '5.0GB',],
+      GIFTING: [ '1.0GB', '5.0GB','750.0MB', '2.0MB', '2.5GB','3.2GB', '1.5GB', '1.8GB'],
       SME: ['500MB', '1.0GB', '2.0GB', '3.0GB',],
       AWOOF: ['1.5GB', '5.0GB',],
       'DATA SHARE': ['*']
@@ -470,7 +470,9 @@ const DataPage = () => {
       'CORPORATE GIFTING': ['100.0MB', '300.0MB','500.0MB', '1.0GB', '2.0GB', '5.0GB', '10.0GB',
       ],
       // '150.0MB', '300.0MB', '500.0MB', '3.0GB', '5.0GB', '10.0GB',
-      AWOOF: [ '2.5GB',]
+      AWOOF: [ '2.5GB',],
+      GIFTING: ['*']
+
     },
     '9MOBILE': {
       CORPORATE_GIFTING: ['500MB', '1GB', '2GB', '5GB', '10GB', '*']
@@ -496,7 +498,7 @@ const DataPage = () => {
     //mtn 'DATA COUPONS', 'GIFTING', 'SME', 'SME 2', 'DATA SHARE', 'AWOOF'
     // airtel 'DATA COUPONS', 'GIFTING', 'SME', 'DATA SHARE',
     MTN: ['GIFTING', 'AWOOF', 'DATA SHARE'],
-    AIRTEL: ['AWOOF', 'CORPORATE GIFTING',],
+    AIRTEL: ['AWOOF', 'CORPORATE GIFTING', 'GIFTING'],
     '9MOBILE': [ 'CORPORATE GIFTING',],
     GLO: ['CORPORATE GIFTING',]
   };
