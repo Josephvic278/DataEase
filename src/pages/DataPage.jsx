@@ -378,11 +378,11 @@ const DataPage = () => {
         break;
       case 'AIRTEL':
         if (planSizeInGB < 0.5) {
-          additionalCost = 8;
+          additionalCost = 10;
         } else if (planSizeInGB < 1) {
-          additionalCost = 9;
+          additionalCost = 11;
         } else if (planSizeInGB < 2) {
-          additionalCost = 8;
+          additionalCost = 11;
         } else if (planSizeInGB < 5) {
           additionalCost = 10;
         } else if (planSizeInGB < 10) {
@@ -464,13 +464,13 @@ const DataPage = () => {
       GIFTING: [ '1.0GB', '5.0GB','750.0MB', '2.0MB', '2.5GB','3.2GB', '1.5GB', '1.8GB','7.0GB'],
       SME: ['500MB', '1.0GB', '2.0GB', '3.0GB',],
       AWOOF: ['1.5GB', '5.0GB',],
-      'DATA SHARE': ['*']
+      'DATA SHARE': ['1.0GB', '2.0GB', '3.0GB', '5.0GB']
     },
     AIRTEL: {
       'CORPORATE GIFTING': ['100.0MB', '300.0MB','500.0MB', '1.0GB', '2.0GB', '5.0GB', '10.0GB',
       ],
       // '150.0MB', '300.0MB', '500.0MB', '3.0GB', '5.0GB', '10.0GB',
-      AWOOF: [ '2.5GB',],
+      AWOOF: [ '2.0GB','150.0MB', '300.0MB', '1.0GB', '3.0GB', '7.0GB', '10.0GB'],
       GIFTING: ['*']
 
     },
@@ -478,8 +478,9 @@ const DataPage = () => {
       CORPORATE_GIFTING: ['500MB', '1GB', '2GB', '5GB', '10GB', '*']
     },
     GLO: {
-      'CORPORATE GIFTING': ['500.0MB', '1.0GB', '2.0GB', '5.0GB', '10.0GB'],
-      GIFTING: ['500MB', '1GB', '2GB', '5GB', '10GB', '*']
+      'CORPORATE GIFTING': ['500.0MB', '1.0GB', '2.0GB', '5.0GB', '10.0GB', '200.0MB', '3.0GB'],
+      GIFTING: ['500MB', '1GB', '2GB', '5GB', '10GB', '*'],
+      AWOOF: ['750.0MB', '1.5GB', '2.5GB', '10.0GB'],
     }
   };
 
@@ -500,7 +501,7 @@ const DataPage = () => {
     MTN: ['GIFTING', 'AWOOF', 'DATA SHARE'],
     AIRTEL: ['AWOOF', 'CORPORATE GIFTING', 'GIFTING'],
     '9MOBILE': [ 'CORPORATE GIFTING',],
-    GLO: ['CORPORATE GIFTING',]
+    GLO: ['CORPORATE GIFTING','AWOOF']
   };
 
   if (data_vendor === 'subsizi') {
