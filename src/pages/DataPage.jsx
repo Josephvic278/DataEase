@@ -318,8 +318,8 @@ const DataPage = () => {
     setMonthValidate(plan.month_validate);
   };
 
-  // const data_vendor = 'subsizi'
-  const data_vendor = 'mypayconnect'
+  const data_vendor = 'subsizi'
+  // const data_vendor = 'mypayconnect'
 
     // Utility function to extract plan size
   const getPlanSize = (plan) => {
