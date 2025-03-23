@@ -452,7 +452,7 @@ const DataPage = () => {
       SME: [ '150.0MB', '300.0MB', '600.0MB', '3.0GB', '7.0GB', '10.0GB'],
     },
     '9MOBILE': {
-      CORPORATE_GIFTING: ['500MB', '1GB', '2GB', '5GB', '10GB', '*']
+      'CORPORATE GIFTING': ['500MB', '1GB', '2GB', '5GB', '10GB', '*']
     },
     GLO: {
       'CORPORATE GIFTING': ['500.0MB','200.0MB', '1.0GB', '2.0GB', '3.0GB', '5.0GB', '10.0GB'],
@@ -475,7 +475,7 @@ const DataPage = () => {
 
     },
     '9MOBILE': {
-      CORPORATE_GIFTING: ['500MB', '1GB', '2GB', '5GB', '10GB', '*']
+      'CORPORATE GIFTING': ['*']
     },
     GLO: {
       'CORPORATE GIFTING': ['500.0MB', '1.0GB', '2.0GB', '5.0GB', '10.0GB', '200.0MB', '3.0GB'],
