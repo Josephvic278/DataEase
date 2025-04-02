@@ -440,7 +440,7 @@ const DataPage = () => {
   // List of available data sizes for each network and data type
   const availableDataSizes1 = {
     MTN: {
-      GIFTING: [ '1.0GB', '1.5GB', '3.2GB','3.5GB', '5.0GB', '6.0GB','7.0GB', '36.0GB', '75.0GB', '200.0GB'],
+      GIFTING: [ '1.0GB', '1.5GB', '3.2GB','3.5GB', '5.0GB', '6.0GB','7.0GB','11.0GB', '36.0GB', '75.0GB', '200.0GB'],
       SME: ['500MB', '1.0GB', '3.0GB', '2.0GB', '5.0GB', '10.0GB'],
       AWOOF: ['1.5GB', '5.0GB',],
       'DATA SHARE': ['*']
