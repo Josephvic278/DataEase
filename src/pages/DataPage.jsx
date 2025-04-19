@@ -461,7 +461,7 @@ const DataPage = () => {
   };
   const availableDataSizes = {
     MTN: {
-      GIFTING: [ '1.0GB','3.0GB', '5.0GB','10.0GB', '750.0MB', '2.0MB', '2.5GB','3.2GB', '1.5GB', '1.8GB','7.0GB'],
+      GIFTING: [ '1.0GB',"6.0GB",'11.0GB','36.0GB','3.5GB','1.12GB','3.0GB', '5.0GB','10.0GB', '750.0MB', '2.0MB', '2.5GB','3.2GB', '1.5GB', '1.8GB','7.0GB'],
       SME: ['500MB', '1.0GB', '2.0GB', '3.0GB',],
       AWOOF: ['1.5GB', '5.0GB',],
       'DATA SHARE': [ '2.0GB', '3.0GB', '5.0GB']
