@@ -441,9 +441,10 @@ const DataPage = () => {
   const availableDataSizes1 = {
     MTN: {
       GIFTING: [ '1.0GB', '1.5GB', '3.2GB','3.5GB', '5.0GB', '6.0GB','7.0GB','11.0GB', '36.0GB', '75.0GB', '200.0GB'],
-      SME: ['500MB', '1.0GB', '3.0GB', '2.0GB', '5.0GB', '10.0GB'],
+      SME: ['500.0MB', '1.0GB', '3.0GB', '2.0GB', '5.0GB', '10.0GB'],
       AWOOF: ['1.5GB', '5.0GB',],
-      'DATA SHARE': ['*']
+      'DATA SHARE': ['*'],
+      'CORPORATE GIFTING': ['500.0MB','1.2GB','2.0MB','2.5GB','3.2GB','6.0GB','6.75GB','14.5GB']
     },
     AIRTEL: {
       'CORPORATE GIFTING': ['100.0MB', '300.0MB','500.0MB', '1.0GB', '2.0GB', '5.0GB', '10.0GB', '15.0GB', '20.0GB'
@@ -490,7 +491,7 @@ const DataPage = () => {
   const networkDataTypesConfig1 = {
     //mtn 'DATA COUPONS', 'GIFTING', 'SME', 'SME 2', 'DATA SHARE', 'AWOOF'
     // airtel 'DATA COUPONS', 'GIFTING', 'SME', 'DATA SHARE',
-    MTN: ['GIFTING', 'SME', ],
+    MTN: ['GIFTING', 'SME','CORPORATE GIFTING' ],
     AIRTEL: ['SME', 'CORPORATE GIFTING',],
     '9MOBILE': [ 'CORPORATE GIFTING', 'SME', 'GIFTING'],
     GLO: ['CORPORATE GIFTING','SME', 'GIFTING']
