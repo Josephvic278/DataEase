@@ -451,6 +451,7 @@ const DataPage = () => {
       ],
       // '150.0MB', '300.0MB', '500.0MB', '3.0GB', '5.0GB', '10.0GB',
       SME: [ '150.0MB', '300.0MB', '600.0MB', '3.0GB', '7.0GB', '10.0GB'],
+      GIFTING: ["*"]
     },
     '9MOBILE': {
       'CORPORATE GIFTING': ['500MB', '1GB', '2GB', '5GB', '10GB', '*']
@@ -492,7 +493,7 @@ const DataPage = () => {
     //mtn 'DATA COUPONS', 'GIFTING', 'SME', 'SME 2', 'DATA SHARE', 'AWOOF'
     // airtel 'DATA COUPONS', 'GIFTING', 'SME', 'DATA SHARE',
     MTN: ['GIFTING', 'SME','CORPORATE GIFTING' ],
-    AIRTEL: ['SME', 'CORPORATE GIFTING',],
+    AIRTEL: ['SME', 'CORPORATE GIFTING', 'GIFTING'],
     '9MOBILE': [ 'CORPORATE GIFTING', 'SME', 'GIFTING'],
     GLO: ['CORPORATE GIFTING','SME', 'GIFTING']
   }
