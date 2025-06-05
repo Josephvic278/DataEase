@@ -443,7 +443,7 @@ const DataPage = () => {
       GIFTING: ['75.0MB','110.0MB','230.0MB', '500.0MB','750.0MB', '1.0GB','1.12GB','2.7GB', '1.5GB', '3.2GB','3.5GB', '5.0GB', '6.0GB','6.75GB','7.0GB','11.0GB', '36.0GB', '75.0GB', '200.0GB'],
       SME: ['500.0MB', '1.0GB', '3.0GB', '2.0GB', '5.0GB', '10.0GB'],
       AWOOF: ['1.5GB', '5.0GB',],
-      DATA SHARE: ['*'],
+      'DATA SHARE': ['*'],
       'CORPORATE GIFTING': ['500.0MB','1.2GB','2.0MB','2.5GB','3.2GB','6.0GB','6.75GB','14.5GB']
     },
     AIRTEL: {
