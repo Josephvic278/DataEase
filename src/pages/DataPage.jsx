@@ -22,20 +22,42 @@ const DataPage = () => {
   const [loading, setLoading] = useState(false);
   const [dataTypes, setDataTypes] = useState([]);
   const [dataPlans, setDataPlans] = useState([]);
-  const [isLoading, setIsLoading] = useState(false); // State for overlay loading
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Fair profit calculation function
+  const calculateFairProfit = (planSizeInGB) => {
+    if (planSizeInGB <= 0) return 5; // Minimum for invalid/unknown sizes
+    
+    // Special case for 1GB as requested
+    if (planSizeInGB >= 0.9 && planSizeInGB <= 1.1) return 7;
+    
+    // Fair distribution based on data size
+    if (planSizeInGB < 0.5) return 5;        // Under 500MB: minimum profit
+    if (planSizeInGB < 0.9) return 6;        // 500MB - 900MB
+    if (planSizeInGB < 1.5) return 8;        // 1.1GB - 1.5GB  
+    if (planSizeInGB < 2.5) return 10;       // 1.5GB - 2.5GB
+    if (planSizeInGB < 4) return 12;         // 2.5GB - 4GB
+    if (planSizeInGB < 6) return 15;         // 4GB - 6GB
+    if (planSizeInGB < 10) return 20;        // 6GB - 10GB
+    if (planSizeInGB < 15) return 25;        // 10GB - 15GB
+    if (planSizeInGB < 25) return 30;        // 15GB - 25GB
+    if (planSizeInGB < 50) return 35;        // 25GB - 50GB
+    return 40;                               // 50GB+: maximum profit
+  };
+
   const extractPlanSizeInGB = (plan) => {
-    if (!plan) return 0; // Return 0 if plan is null or undefined
+    if (!plan) return 0;
     const match = plan.match(/(\d+(\.\d+)?)\s*(GB|TB|MB)/i);
-    if (!match) return 0; // Default to 0 if no match
+    if (!match) return 0;
   
     const size = parseFloat(match[1]);
     const unit = match[3].toUpperCase();
   
-    // Convert size to GB
     if (unit === 'TB') return size * 1024;
     if (unit === 'MB') return size / 1024;
-    return size; // Already in GB
+    return size;
   };
+
   const handleAutoFill = () => setPhoneNumber(JSON.parse(localStorage.getItem("user")).phone_number);
 
   const handlePay = () => {
@@ -57,9 +79,9 @@ const DataPage = () => {
       phone_number: phoneNumber,
       plan_id: selectedPlan.dataplan_id,
       action: 'purchase',
-      data_type: dataType, // Include the selected data type
+      data_type: dataType,
       plan: selectedPlan,
-      ported_number: isPortedNumber // Add ported_number argument
+      ported_number: isPortedNumber
     };
 
     authAxios.post('/data/', requestBody)
@@ -89,18 +111,18 @@ const DataPage = () => {
 
   useEffect(() => {
     if (selectedNetwork) {
-      setDataType(''); // Reset data type when network changes
-      setSelectedPlan(null); // Reset selected plan when network changes
-      setAmount(0); // Reset amount when network changes
-      setMonthValidate(''); // Reset month validation when network changes
-      setIsLoading(true); // Start loading when network is selected
+      setDataType('');
+      setSelectedPlan(null);
+      setAmount(0);
+      setMonthValidate('');
+      setIsLoading(true);
   
       authAxios.post(`/data/`, { action: 'network_data', network_id: selectedNetwork.id })
         .then(res => {
           if (res.data.status === 'success') {
             const networkData = res.data.message[selectedNetwork.name] || {};
             setDataTypes(Object.keys(networkData));
-            setDataPlans([]); // Reset plans when network changes
+            setDataPlans([]);
             console.log(dataTypes)
           } else {
             toast.error(res.data.message);
@@ -110,23 +132,20 @@ const DataPage = () => {
           const errorMessage = err.response?.data?.message || err.message;
           toast.error(errorMessage);
         })
-        .finally(() => setIsLoading(false)); // End loading after response
+        .finally(() => setIsLoading(false));
     }
   }, [selectedNetwork]);  
 
   useEffect(() => {
     if (dataType && selectedNetwork) {
-      setIsLoading(true); // Start loading for data plans
+      setIsLoading(true);
       authAxios.post(`/data/`, { action: 'get_plans', network_id: selectedNetwork.id, data_type: dataType })
         .then(res => {
           if (res.data.status === 'success') {
             setDataPlans(res.data.message);
-            const defaultPlan = res.data.message[0]; // Set default plan to the first option
-            // setSelectedPlan(defaultPlan);
+            const defaultPlan = res.data.message[0];
             const percentage = parseFloat(defaultPlan.plan_amount)*0.05
-            // console.log(percentage)
             Math.ceil(percentage)
-            // setAmount(parseFloat(defaultPlan.plan_amount));
             setMonthValidate(defaultPlan.month_validate);
           } else {
             toast.error(res.data.message);
@@ -136,7 +155,7 @@ const DataPage = () => {
           const errorMessage = err.response?.data?.message || err.message;
           toast.error(errorMessage);
         })
-        .finally(() => setIsLoading(false)); // End loading after response
+        .finally(() => setIsLoading(false));
     }
   }, [dataType, selectedNetwork]);
 
@@ -147,172 +166,13 @@ const DataPage = () => {
     }
   
     setSelectedPlan(plan);
-  
+    
     // Extract the plan size in GB
     const planSizeInGB = extractPlanSizeInGB(plan.plan);
-  
-    let additionalCost = 0;
-  
-    // Determine additional cost for mypayconnect
-    if (data_vendor === 'mypayconnect') {
-      const additionalCosts = {
-        MTN: {
-          GIFTING: {
-            '1.0GB': 3,
-            '1.5GB': 5,
-            '3.2GB': 12,
-            '5.0GB': 15,
-            '7.0GB': 20,
-            '75.0GB': 50,
-            '200.0GB': 100,
-          },
-          SME: {
-            '500MB': 3,
-            '1.0GB': 5,
-            '2.0GB': 8,
-            '3.0GB': 10,
-            '5.0GB': 15,
-            '10.0GB': 25,
-          },
-          AWOOF: {
-            '1.5GB': 6,
-            '5.0GB': 12,
-          },
-          'DATA SHARE': {
-            '*': 8, // Default additional cost for all sizes
-          },
-        },
-        AIRTEL: {
-          'CORPORATE GIFTING': {
-            '100.0MB': 8,
-            '300.0MB': 3,
-            '500.0MB': 3,
-            '1.0GB': 8,
-            '2.0GB': 12,
-            '5.0GB': 20,
-            '10.0GB': 35,
-            '15.0GB': 50,
-            '20.0GB': 70,
-          },
-          SME: {
-            '150.0MB': 2,
-            '300.0MB': 4,
-            '600.0MB': 6,
-            '3.0GB': 10,
-            '7.0GB': 20,
-            '10.0GB': 30,
-          },
-        },
-        '9MOBILE': {
-          CORPORATE_GIFTING: {
-            '500MB': 5,
-            '1GB': 8,
-            '2GB': 12,
-            '5GB': 20,
-            '10GB': 35,
-            '*': 10, // Default additional cost for all sizes
-          },
-        },
-        GLO: {
-          'CORPORATE GIFTING': {
-            '200.0MB': 3,
-            '500.0MB': 5,
-            '1.0GB': 7,
-            '2.0GB': 10,
-            '3.0GB': 12,
-            '5.0GB': 15,
-            '10.0GB': 25,
-          },
-          GIFTING: {
-            '500MB': 5,
-            '1GB': 7,
-            '2GB': 10,
-            '5GB': 15,
-            '10GB': 25,
-            '*': 10, // Default additional cost for all sizes
-          },
-        },
-      };
-  
-      const networkCosts = additionalCosts[selectedNetwork.name];
-      if (networkCosts) {
-        const dataTypeCosts = networkCosts[dataType];
-        if (dataTypeCosts) {
-          additionalCost = dataTypeCosts[plan.plan] || dataTypeCosts['*'] || 0;
-        }
-      }
-    } else {
-      // Determine additional cost for subsizi (default)
-      switch (selectedNetwork.name) {
-        case 'MTN':
-          if (planSizeInGB < 0.5) {
-            additionalCost = 5;
-          } else if (planSizeInGB < 1) {
-            additionalCost = 8;
-          } else if (planSizeInGB < 2) {
-            additionalCost = 8;
-          } else if (planSizeInGB < 3) {
-            additionalCost = 10;
-          } else if (planSizeInGB < 5) {
-            additionalCost = 10;
-          } else if (planSizeInGB < 6) {
-            additionalCost = 30;
-          } else if (planSizeInGB < 10) {
-            additionalCost = 25;
-          } else {
-            additionalCost = 30;
-          }
-          break;
-        case 'AIRTEL':
-          if (planSizeInGB < 0.5) {
-            additionalCost = 8;
-          } else if (planSizeInGB < 1) {
-            additionalCost = 9;
-          } else if (planSizeInGB < 2) {
-            additionalCost = 8;
-          } else if (planSizeInGB < 5) {
-            additionalCost = 10;
-          } else if (planSizeInGB < 10) {
-            additionalCost = 30;
-          } else {
-            additionalCost = 40;
-          }
-          break;
-        case '9MOBILE':
-          if (planSizeInGB < 0.5) {
-            additionalCost = 7;
-          } else if (planSizeInGB < 1) {
-            additionalCost = 10;
-          } else if (planSizeInGB < 2) {
-            additionalCost = 15;
-          } else if (planSizeInGB < 5) {
-            additionalCost = 20;
-          } else if (planSizeInGB < 10) {
-            additionalCost = 30;
-          } else {
-            additionalCost = 35;
-          }
-          break;
-        case 'GLO':
-          if (planSizeInGB < 0.5) {
-            additionalCost = 8;
-          } else if (planSizeInGB < 1) {
-            additionalCost = 8;
-          } else if (planSizeInGB < 2) {
-            additionalCost = 10;
-          } else if (planSizeInGB < 5) {
-            additionalCost = 10;
-          } else if (planSizeInGB < 10) {
-            additionalCost = 30;
-          } else {
-            additionalCost = 30;
-          }
-          break;
-        default:
-          additionalCost = 8; // Default additional cost
-      }
-    }
-  
+    
+    // Calculate fair profit using the new system
+    const additionalCost = calculateFairProfit(planSizeInGB);
+    
     // Update amount and month validation
     setAmount(parseFloat(plan.plan_amount) + additionalCost);
     setMonthValidate(plan.month_validate);
@@ -321,15 +181,13 @@ const DataPage = () => {
   // const data_vendor = 'subsizi'
   const data_vendor = 'mypayconnect'
 
-    // Utility function to extract plan size
   const getPlanSize = (plan) => {
     const match = plan.match(/\b\d+(\.\d+)?\s?(MB|GB|TB)\b/i);
     return match ? match[0] : plan;
   };
 
-  // for the subizi part
+  // For the subsizi part
   const [selectedNetwork1, setSelectedNetwork1] = useState(null);
-  // const [phoneNumber1, setPhoneNumber1] = useState('');
   const [selectedPlan1, setSelectedPlan1] = useState(null);
   const [dataType1, setDataType1] = useState('');
   const [amount1, setAmount1] = useState(0.0);
@@ -339,9 +197,9 @@ const DataPage = () => {
   const [isModalOpen1, setIsModalOpen1] = useState(false);
   const [pin1, setPin1] = useState('');
   const [isPortedNumber, setIsPortedNumber] = useState(false);
-  // const [loading, setLoading] = useState(false);
   const [dataTypes1, setDataTypes1] = useState([]);
   const [dataPlans1, setDataPlans1] = useState([]);
+  
   const handlePlanChange1 = (plan) => {
     if (!plan) {
       toast.error('Invalid plan selected. Please try again.');
@@ -349,82 +207,13 @@ const DataPage = () => {
     }
   
     setSelectedPlan1(plan);
-  
+    
     // Extract the plan size in GB
     const planSizeInGB = extractPlanSizeInGB(plan.plan_name);
-  
-    // Determine additional cost based on network and plan size
-    let additionalCost;
-    switch (selectedNetwork1.name) {
-      case 'MTN':
-        if (planSizeInGB < 0.5) {
-          additionalCost = 5;
-        } else if (planSizeInGB < 1) {
-          additionalCost = 8;
-        } else if (planSizeInGB < 2) {
-          additionalCost = 8;
-        } else if (planSizeInGB < 3) {
-          additionalCost = 10;
-        } else if (planSizeInGB < 5) {
-          additionalCost = 10;
-        } else if (planSizeInGB < 6) {
-          additionalCost = 30;
-        }
-        else if (planSizeInGB < 10) {
-          additionalCost = 25;
-        } else {
-          additionalCost = 30;
-        }
-        break;
-      case 'AIRTEL':
-        if (planSizeInGB < 0.5) {
-          additionalCost = 10;
-        } else if (planSizeInGB < 1) {
-          additionalCost = 11;
-        } else if (planSizeInGB < 2) {
-          additionalCost = 11;
-        } else if (planSizeInGB < 5) {
-          additionalCost = 10;
-        } else if (planSizeInGB < 10) {
-          additionalCost = 30;
-        } else {
-          additionalCost = 40;
-        }
-        break;
-      case '9MOBILE':
-        if (planSizeInGB < 0.5) {
-          additionalCost = 7;
-        } else if (planSizeInGB < 1) {
-          additionalCost = 10;
-        } else if (planSizeInGB < 2) {
-          additionalCost = 15;
-        } else if (planSizeInGB < 5) {
-          additionalCost = 20;
-        } else if (planSizeInGB < 10) {
-          additionalCost = 30;
-        } else {
-          additionalCost = 35;
-        }
-        break;
-      case 'GLO':
-        if (planSizeInGB < 0.5) {
-          additionalCost = 8;
-        } else if (planSizeInGB < 1) {
-          additionalCost = 8;
-        } else if (planSizeInGB < 2) {
-          additionalCost = 10;
-        } else if (planSizeInGB < 5) {
-          additionalCost = 10;
-        } else if (planSizeInGB < 10) {
-          additionalCost = 30;
-        } else {
-          additionalCost = 30;
-        }
-        break;
-      default:
-        additionalCost = 8; // Default additional cost
-    }
-  
+    
+    // Calculate fair profit using the same system
+    const additionalCost = calculateFairProfit(planSizeInGB);
+    
     // Update amount and month validation
     setAmount1(parseFloat(plan.plan_amount) + additionalCost);
     setMonthValidate1(plan.month_validate);
@@ -447,9 +236,7 @@ const DataPage = () => {
       'CORPORATE GIFTING': ['500.0MB','1.2GB','2.0MB','2.5GB','3.2GB','6.0GB','6.75GB','14.5GB']
     },
     AIRTEL: {
-      'CORPORATE GIFTING': ['100.0MB', '300.0MB','500.0MB', '1.0GB', '2.0GB', '5.0GB', '10.0GB', '15.0GB', '20.0GB'
-      ],
-      // '150.0MB', '300.0MB', '500.0MB', '3.0GB', '5.0GB', '10.0GB',
+      'CORPORATE GIFTING': ['100.0MB', '300.0MB','500.0MB', '1.0GB', '2.0GB', '5.0GB', '10.0GB', '15.0GB', '20.0GB'],
       SME: [ '150.0MB', '300.0MB', '600.0MB', '3.0GB', '7.0GB', '10.0GB'],
       GIFTING: ["*"]
     },
@@ -461,6 +248,7 @@ const DataPage = () => {
       GIFTING: ['500MB', '1GB', '2GB', '5GB', '10GB', '*']
     }
   };
+
   const availableDataSizes = {
     MTN: {
       GIFTING: [ '1.0GB',"6.0GB",'11.0GB','36.0GB','3.5GB','1.12GB','3.0GB', '5.0GB','10.0GB', '750.0MB', '2.0MB', '2.5GB','3.2GB', '1.5GB', '1.8GB','7.0GB'],
@@ -469,12 +257,9 @@ const DataPage = () => {
       'DATA SHARE': [ '2.0GB', '3.0GB', '5.0GB']
     },
     AIRTEL: {
-      'CORPORATE GIFTING': ['100.0MB', '300.0MB','500.0MB', '1.0GB', '2.0GB', '5.0GB', '10.0GB',
-      ],
-      // '150.0MB', '300.0MB', '500.0MB', '3.0GB', '5.0GB', '10.0GB',
+      'CORPORATE GIFTING': ['100.0MB', '300.0MB','500.0MB', '1.0GB', '2.0GB', '5.0GB', '10.0GB'],
       AWOOF: [ '2.0GB','150.0MB', '300.0MB', '1.0GB', '3.0GB', '7.0GB', '10.0GB'],
       GIFTING: ['*']
-
     },
     '9MOBILE': {
       'CORPORATE GIFTING': ['*']
@@ -490,16 +275,13 @@ const DataPage = () => {
 
   // Configuration for available data types per network
   const networkDataTypesConfig1 = {
-    //mtn 'DATA COUPONS', 'GIFTING', 'SME', 'SME 2', 'DATA SHARE', 'AWOOF'
-    // airtel 'DATA COUPONS', 'GIFTING', 'SME', 'DATA SHARE',
     MTN: ['GIFTING', 'SME','CORPORATE GIFTING' ],
     AIRTEL: ['SME', 'CORPORATE GIFTING', 'GIFTING'],
     '9MOBILE': [ 'CORPORATE GIFTING', 'SME', 'GIFTING'],
     GLO: ['CORPORATE GIFTING','SME', 'GIFTING']
   }
+
   const networkDataTypesConfig = {
-    //mtn 'DATA COUPONS', 'GIFTING', 'SME', 'SME 2', 'DATA SHARE', 'AWOOF'
-    // airtel 'DATA COUPONS', 'GIFTING', 'SME', 'DATA SHARE',
     MTN: ['GIFTING', 'AWOOF', 'DATA SHARE'],
     AIRTEL: ['AWOOF','GIFTING'],
     '9MOBILE': [ 'CORPORATE GIFTING',],
@@ -509,21 +291,19 @@ const DataPage = () => {
   if (data_vendor === 'subsizi') {
     useEffect(() => {
       if (selectedNetwork1) {
-        // Reset all relevant states when network changes
         setAmount1(0);
         setSelectedPlan1(null);
         setMonthValidate1('');
-        setDataType1(''); // Clear data type
-        setDataPlans1([]); // Clear data plans
-        setDataTypes1([]); // Clear available data types
+        setDataType1('');
+        setDataPlans1([]);
+        setDataTypes1([]);
         setIsLoading1(true);
   
         authAxios
           .post(`/data/`, { action: 'data_info', network: selectedNetwork1.name })
           .then((res) => {
             const networkData1 = res.data.message;
-            setDataTypes1(Object.keys(networkData1)); // Set available data types
-            // console.log(selectedNetwork1.name);
+            setDataTypes1(Object.keys(networkData1));
           })
           .catch((err) => {
             console.log(err);
@@ -536,7 +316,6 @@ const DataPage = () => {
   
     useEffect(() => {
       if (dataType1 && selectedNetwork1) {
-        // console.log(dataType1);
         setIsLoading1(true);
         authAxios
           .post('/data/', {
@@ -546,9 +325,9 @@ const DataPage = () => {
           })
           .then((res) => {
             setDataPlans1(res.data.message);
-            setSelectedPlan1(null); // User must manually select a plan
-            setAmount1(0); // Reset amount
-            setMonthValidate1(''); // Reset month validation
+            setSelectedPlan1(null);
+            setAmount1(0);
+            setMonthValidate1('');
           })
           .catch((err) => {
             console.log(err);
@@ -560,10 +339,9 @@ const DataPage = () => {
     }, [dataType1, selectedNetwork1]);
   }  
 
-  // the pin and payment section for subsizi
+  // The pin and payment section for subsizi
   const handlePay1 = () => {
     if (!selectedNetwork1 || !phoneNumber || !selectedPlan1) {
-      // console.log(phoneNumber1)
       toast.error('Please fill in all required fields');
       return;
     }
@@ -583,7 +361,7 @@ const DataPage = () => {
       action: 'purchase',
       data_type: dataType1,
       plan: selectedPlan1,
-      ported_number: isPortedNumber // Add ported_number argument
+      ported_number: isPortedNumber
     };
 
     authAxios.post('/data/', requestBody)
@@ -591,19 +369,18 @@ const DataPage = () => {
         if (res.data.status === 'error') {
           toast.error(res.data.message);
         } else {
-          // toast.success(res.data.message);
           Swal.fire('Success!', res.data.message, 'success')
         }
       })
       .catch(err => {
         const errorMessage = err.response?.data?.message || err.message;
-        // toast.error(errorMessage);
         Swal.fire('Error!', errorMessage, 'error');
       })
       .finally(() => setLoading1(false));
   };
 
   const handlePinError1 = () => setPin('');
+
   return (
     <div>
       {data_vendor === 'mypayconnect' ? (
@@ -677,7 +454,7 @@ const DataPage = () => {
                 onChange={(e) => setDataType(e.target.value)}
                 className="w-full border rounded-lg px-3 py-2 h-14 outline-none"
                 value={dataType}
-                disabled={isLoading} // Disable dropdown during loading
+                disabled={isLoading}
               >
                 <option value="" disabled>Select a data type</option>
                 {dataTypes
@@ -699,14 +476,14 @@ const DataPage = () => {
                 }}
                 className="w-full border rounded-lg px-3 py-2 h-14 outline-none"
                 value={selectedPlan?.dataplan_id || ''}
-                disabled={isLoading} // Disable dropdown during loading
+                disabled={isLoading}
               >
                 <option value="" disabled>Select a plan</option>
                 {dataPlans
-                  .filter((plan) => availableDataSizes1[selectedNetwork?.name]?.[dataType]?.includes(getPlanSize(plan.plan)) || availableDataSizes1[selectedNetwork?.name]?.[dataType]?.includes('*')) // Filter plans based on available data sizes
+                  .filter((plan) => availableDataSizes1[selectedNetwork?.name]?.[dataType]?.includes(getPlanSize(plan.plan)) || availableDataSizes1[selectedNetwork?.name]?.[dataType]?.includes('*'))
                   .map((plan) => (
                     <option key={plan.dataplan_id} value={plan.dataplan_id}>
-                      {getPlanSize(plan.plan)} {/* Display only the plan size */}
+                      {getPlanSize(plan.plan)}
                     </option>
                   ))}
               </select>
@@ -735,7 +512,7 @@ const DataPage = () => {
             <button
               onClick={handlePay}
               className="w-full bg-green-500 text-white font-semibold py-3 rounded-lg hover:bg-green-600 transition-colors"
-              disabled={loading} // Disable button when loading
+              disabled={loading}
             >
               {loading ? (
                 <svg
@@ -760,7 +537,6 @@ const DataPage = () => {
             )}
           </div>
 
-          {/* Modal Overlay */}
           <PinPopup 
             isOpen={isModalOpen}
             onClose={handleCloseModal}
@@ -841,7 +617,7 @@ const DataPage = () => {
                 onChange={(e) => setDataType1(e.target.value)}
                 className="w-full border rounded-lg px-3 py-2 h-14 outline-none"
                 value={dataType1}
-                disabled={isLoading1} // Disable dropdown during loading
+                disabled={isLoading1}
               >
                 <option value="" disabled>Select a data type</option>
                 {dataTypes1
@@ -863,14 +639,14 @@ const DataPage = () => {
                 }}
                 className="w-full border rounded-lg px-3 py-2 h-14 outline-none"
                 value={selectedPlan1?.plan_id || ''}
-                disabled={isLoading} // Disable dropdown during loading
+                disabled={isLoading}
               >
                 <option value="" disabled>Select a plan</option>
                 {dataPlans1
-                  .filter((plan) => availableDataSizes[selectedNetwork1?.name]?.[dataType1]?.includes(getPlanSize(plan.plan_name)) || availableDataSizes[selectedNetwork1?.name]?.[dataType1]?.includes('*')) // Filter plans based on available data sizes
+                  .filter((plan) => availableDataSizes[selectedNetwork1?.name]?.[dataType1]?.includes(getPlanSize(plan.plan_name)) || availableDataSizes[selectedNetwork1?.name]?.[dataType1]?.includes('*'))
                   .map((plan) => (
                     <option key={plan.plan_id} value={plan.plan_id}>
-                      {plan.plan_name} {/* Display only the plan size */}
+                      {plan.plan_name}
                     </option>
                   ))}
               </select>
@@ -905,10 +681,11 @@ const DataPage = () => {
                 onChange={(e) => setIsPortedNumber(e.target.checked)}
               />
             </div>
+
             <button
               onClick={handlePay1}
               className="w-full bg-green-500 text-white font-semibold py-3 rounded-lg hover:bg-green-600 transition-colors"
-              disabled={loading1} // Disable button when loading
+              disabled={loading1}
             >
               {loading1 ? (
                 <svg
@@ -933,7 +710,6 @@ const DataPage = () => {
             )}
           </div>
 
-          {/* Modal Overlay */}
           <PinPopup 
             isOpen={isModalOpen1}
             onClose={handleCloseModal1}
